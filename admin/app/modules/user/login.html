@@ -1,0 +1,36 @@
+<div ng-controller="LoginCtrl">
+
+
+<form id="login-form" ng-submit="login(loginForm)" name="loginForm">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>LogIn</h2>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div id="login-content" class="md-dialog-content">
+        <md-input-container class="md-block">
+            <label>Email</label>
+            <input type='text' required md-no-asterisk name="email" ng-model="model.username">
+        </md-input-container>
+          <div class="alert alert-danger" ng-repeat="error in errors.username">{{error}}</div>
+        <md-input-container class="md-block">
+            <label>Password</label>
+            <input type='password' required md-no-asterisk name="email" ng-model="model.password">
+        </md-input-container>
+          <div class="alert alert-danger" ng-repeat="error in errors.password">{{error}}</div>
+    <div class="alert alert-danger" ng-repeat="error in errors.non_field_errors">{{error}}</div>
+    <div class="alert alert-danger" ng-if="error">{{error}}</div>
+        <div layout="row" >
+            <md-checkbox ng-model="data.cb1" aria-label="Checkbox 1">
+                Запомнить меня
+            </md-checkbox>
+            <span flex></span>
+            <md-button class="md-primary" type="submit">Login</md-button>
+        </div>
+      </div>
+    </md-dialog-content>
+  </form>
+
+    </div>
