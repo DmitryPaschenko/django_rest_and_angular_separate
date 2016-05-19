@@ -2,10 +2,10 @@
 
 angular.module('AdminApp')
   .controller('UserprofileCtrl', function ($scope, djangoAuth, Validate) {
-    $scope.model = {'first_name':'','last_name':'','email':''};
+    $scope.user_profile_model = {'first_name':'','last_name':'','email':''};
   	$scope.complete = false;
   	djangoAuth.profile().then(function(data){
-  		$scope.model = data;
+  		$scope.user_profile_model = data;
   	});
     $scope.updateProfile = function(formData, model){
       $scope.errors = [];
