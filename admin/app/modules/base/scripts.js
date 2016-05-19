@@ -49,6 +49,24 @@ app.controller('AppCtrl', ['$scope', '$mdBottomSheet','$mdSidenav', '$mdDialog',
       icon: 'logout'
     }
   ];
+
+  $scope.alerts = [];
+
+  $scope.addSuccessAlert = function(message) {
+      $scope.alerts.push({ type: 'success', msg: message });
+  };
+  $scope.addDangerAlert = function(message) {
+      $scope.alerts.push({ type: 'danger', msg: message });
+  };
+
+  $scope.addAlert = function(type, message) {
+      // success, danger
+      $scope.alerts.push({ type: type, msg: message });
+  };
+
+  $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+  };
 }]);
 
 app.config(function($mdThemingProvider) {

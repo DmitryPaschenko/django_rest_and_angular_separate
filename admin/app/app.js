@@ -4,7 +4,8 @@ var app = angular.module('AdminApp', [
     'ui.router',
     'ngCookies',
     'ngResource',
-    'ngSanitize']);
+    'ngSanitize',
+    'ui.bootstrap']);
 
 var API_URL = '/api/v1/';
 

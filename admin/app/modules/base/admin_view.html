@@ -43,6 +43,7 @@
     </div>
   </md-toolbar>
   <md-content flex md-scroll-y>
+    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" class="top-alert">{{alert.msg}}</uib-alert>
     <ui-view name="content" layout="column" layout-fill layout-padding>Blank Content</ui-view>
   </md-content>
 </div>

@@ -1,9 +1,5 @@
 <div ng-controller="UserprofileCtrl">
 <md-card flex-gt-sm="90" flex-gt-md="80">
-    <div class="alert alert-success" ng-show="showSuccessAlert">
-   <button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')" >×</button>
-   <strong>Done!</strong> {{successTextAlert}}
- </div>
     <form name="profileForm" ng-submit="updateProfile(profileForm, user_profile_model)">
         <md-input-container class="md-block">
             <label>First Name</label>

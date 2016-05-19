@@ -2,6 +2,8 @@
 
 angular.module('AdminApp')
   .controller('UserprofileCtrl', function ($scope, djangoAuth, Validate) {
+    $scope.alerts = [];
+
     $scope.user_profile_model = {'first_name':'','last_name':'','email':''};
   	$scope.complete = false;
   	djangoAuth.profile().then(function(data){
@@ -14,11 +16,13 @@ angular.module('AdminApp')
         djangoAuth.updateProfile(model)
         .then(function(data){
         	// success case
-        	$scope.complete = true;
+        	$scope.addSuccessAlert('Well done! You successfully read this important alert message.');
         },function(data){
         	// error case
+        	$scope.addDangerAlert('Danger! There are some errors');
         	$scope.error = data;
         });
       }
     }
+
   });
