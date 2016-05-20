@@ -17,6 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # dev or prod
 ENV_TYPE = 'dev'
+# DEBUG = True
 
 
 # Quick-start development settings - unsuitable for production
@@ -46,6 +47,9 @@ INSTALLED_APPS = (
     'rest_auth.registration',
 
     'users',
+    'permissions',
+    'groups',
+    'dp_base_libs'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -89,19 +93,22 @@ USE_L10N = True
 
 USE_TZ = True
 
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = []
 CORS_ORIGIN_WHITELIST = (
-    'angularadmin'
+    'angularadmin',
+    '127.0.0.1'
 )
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : (
         'rest_framework.permissions.IsAuthenticated',
     ),
-    'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication'
-    )
+    ),
+    'ORDERING_PARAM': 'order'
 }
 
 AUTH_USER_MODEL = 'users.AppUser'

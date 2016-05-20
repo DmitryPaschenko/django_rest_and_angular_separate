@@ -39,9 +39,15 @@ app.controller('AppCtrl', ['$scope', '$mdBottomSheet','$mdSidenav', '$mdDialog',
   ];
   $scope.admin = [
     {
+      sref: 'admin.users',
+      srefOpts: {},
+      title: 'Users',
+      icon: 'groups'
+    },
+    {
       link : '',
-      title: 'Settings',
-      icon: 'settings'
+      title: 'User Permissions',
+      icon: 'groups'
     },
     {
       link : '',

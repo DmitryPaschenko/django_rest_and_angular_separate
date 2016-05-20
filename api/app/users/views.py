@@ -5,12 +5,10 @@ from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework import status
 from rest_framework.renderers import TemplateHTMLRenderer
 import requests
-from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django.contrib.auth import get_user_model
 from rest_framework import filters
-from django_filters import FilterSet, NumberFilter, IsoDateTimeFilter
+from dp_base_libs.paginations import DPAngularTablePagination
 
 
 class AccountConfirmEmailView(APIView):
@@ -67,6 +65,7 @@ class SingleUser(GenericAPIView):
 
 class UserListView(ListAPIView):
     serializer_class = UserSerializer
+    pagination_class = DPAngularTablePagination
     queryset = get_user_model().objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     ordering_fields = (

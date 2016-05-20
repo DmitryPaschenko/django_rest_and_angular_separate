@@ -1,0 +1,47 @@
+<div ng-controller="UserListCtrl as ctrl">
+    <md-fab-toolbar md-open="ctrl.topMenuIsOpenConf.isOpen" count="ctrl.topMenuIsOpenConf.count"
+                  md-direction="{{ctrl.topMenuIsOpenConf.selectedDirection}}">
+    <md-fab-trigger class="align-with-text">
+      <md-button aria-label="menu" class="md-fab md-primary">
+          <md-icon class="ng-scope" aria-hidden="true" style="transition-delay: 0ms;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 18 18" fit=""
+                   preserveAspectRatio="xMidYMid meet" focusable="false">
+                  <path d="M0 0h18v18h-18z" fill="none"></path>
+                  <path d="M2 13.5h14v-1.5h-14v1.5zm0-4h14v-1.5h-14v1.5zm0-5.5v1.5h14v-1.5h-14z"></path>
+              </svg>
+          </md-icon>
+      </md-button>
+    </md-fab-trigger>
+    <md-toolbar>
+      <md-fab-actions class="md-toolbar-tools">
+          <a href="#" class="top-menu-action">Add user</a>
+      </md-fab-actions>
+    </md-toolbar>
+  </md-fab-toolbar>
+    <md-table-container>
+        <table md-table md-row-select multiple ng-model="ctrl.selected" md-progress="ctrl.promise">
+            <thead md-head md-order="ctrl.query.order" md-on-reorder="ctrl.getListData">
+            <tr md-row>
+                <th md-column md-order-by="username"><span>User Name</span></th>
+                <th md-column md-order-by="first_name"><span>First Name</span></th>
+                <th md-column md-order-by="last_name"><span>Last Name</span></th>
+                <th md-column md-order-by="email"><span>Email</span></th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row md-select="item" md-select-id="username" md-auto-select
+                ng-repeat="item in ctrl.listData.results">
+                <td md-cell><a ui-sref="admin.users.edit({userId:item.id})">{{item.username}}</a></td>
+                <td md-cell>{{item.firt_name}}</td>
+                <td md-cell>{{item.last_name}}</td>
+                <td md-cell>{{item.email}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <md-table-pagination md-limit="ctrl.query.limit" md-limit-options="[10, 20, 50]" md-page="ctrl.query.page"
+                         md-total="{{ctrl.listData.count}}" md-on-paginate="ctrl.getListData"
+                         md-page-select></md-table-pagination>
+
+</div>
