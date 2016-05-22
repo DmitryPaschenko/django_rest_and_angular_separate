@@ -9,7 +9,7 @@ function configureTopMenu(self) {
     return self;
 }
 
-angular.module('AdminApp').controller('UserListCtrl', function ($scope, userService) {
+angular.module('AdminApp').controller('PermissionListCtrl', function ($scope, permissionService) {
     var self = this;
 
     $scope.preController();
@@ -18,14 +18,14 @@ angular.module('AdminApp').controller('UserListCtrl', function ($scope, userServ
     self.listData = [];
     // Change this
     self.query = {
-        order: 'username',
+        order: 'name',
         limit: 20,
         page: 1
     };
 
     self.getListData = function () {
         // Change this
-        self.promise = userService.getUserList(self.query).$promise;
+        self.promise = permissionService.getPermissionList(self.query).$promise;
 
         function onSuccess(response) {
             self.listData = response;
@@ -45,8 +45,7 @@ angular.module('AdminApp').controller('UserListCtrl', function ($scope, userServ
     self = configureTopMenu(self);
 });
 
-
-angular.module('AdminApp').controller('UserCtrl', function ($scope, $stateParams, userService) {
+angular.module('AdminApp').controller('PermissionCtrl', function ($scope, $stateParams, permissionService) {
     var self = this;
     var id = $stateParams.userId;
 
@@ -70,6 +69,7 @@ angular.module('AdminApp').controller('UserCtrl', function ($scope, $stateParams
 
 
     self.updateUser = function(formData, model){
+        console.log(formData, model);
         function onSuccess(response) {
             self.model = response;
             $scope.addSuccessAlert('User data saved!')
@@ -86,30 +86,37 @@ angular.module('AdminApp').controller('UserCtrl', function ($scope, $stateParams
     self.getObject(id);
 });
 
-angular.module('AdminApp').controller('UserCreateCtrl', function ($scope, $stateParams, djangoAuth, Validate, $state) {
+angular.module('AdminApp').controller('PermissionCreateCtrl', function ($scope, $stateParams, permissionService) {
     var self = this;
 
     $scope.preController();
 
+    self.contentTypes = [{
+        "id": 8,
+        "app_label": "account",
+        "model": "emailaddress"
+      },
+      {
+        "id": 9,
+        "app_label": "account",
+        "model": "emailconfirmation"
+      }];
 
-    self.model = {'username':'','password1':'','password2':'', 'email':''};
+    self.model = {'name': '', 'codename': '', 'content_type': ''};
 
-    self.register = function(formData){
+    self.addPermission = function(formData, model){
         $scope.clearAlerts();
-        Validate.form_validation(formData,$scope.errors);
-        if(!formData.$invalid){
-            djangoAuth.register(self.model.username,self.model.password1,self.model.password2,self.model.email)
-            .then(function(data){
-        	    $scope.addSuccessAlert('User created!');
-                $state.go('admin.users');
-            },function(data){
-                for(var index in data) {
-                    if (index !== 'status') {
-                        $scope.addDangerAlert('Danger! ' + data[index]);
-                    }
-                }
-                self.errors = data;
-            });
+
+        function onSuccess(response) {
+            $scope.addSuccessAlert('User data saved!')
+            $state.go('admin.permissions');
         }
+
+        function onError(response) {
+            var errorText = response.data.detail === undefined ? 'Save permission data error.' : response.data.detail;
+            $scope.addDangerAlert('Danger! ' + errorText);
+        }
+        permissionService.addPermission(model).$promise.then(onSuccess, onError);
+
     }
 });

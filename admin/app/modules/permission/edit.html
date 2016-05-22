@@ -1,0 +1,17 @@
+<div ng-controller="UserCtrl as ctrl">
+    <form name="userForm" ng-submit="ctrl.updateUser(userForm, ctrl.model)">
+        <md-input-container class="md-block">
+            <label>First Name</label>
+            <input ng-model="ctrl.model.first_name">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Last Name</label>
+            <input ng-model="ctrl.model.last_name">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Email</label>
+            <input ng-model="ctrl.model.email">
+        </md-input-container>
+        <md-button class="md-raised md-primary" type="submit">Save</md-button>
+    </form>
+</div>

@@ -47,7 +47,8 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state) {
       icon: 'groups'
     },
     {
-      link : '',
+      sref: 'admin.permissions',
+      srefOpts: {},
       title: 'User Permissions',
       icon: 'groups'
     },

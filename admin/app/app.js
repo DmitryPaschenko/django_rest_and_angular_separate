@@ -80,6 +80,8 @@ function($httpProvider, $resourceProvider, $mdThemingProvider) {
             },
             data: { pageTitle: 'Profile' }
         })
+
+
         .state("admin.users_edit", {
             url: "/users/{userId:[0-9]+}",
             views: {
@@ -107,6 +109,28 @@ function($httpProvider, $resourceProvider, $mdThemingProvider) {
             },
             data: { pageTitle: 'Users list' }
         })
+
+
+        .state("admin.create_permission", {
+            url: "/permissions/create",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/permission/create.html',
+                }
+            },
+            data: { pageTitle: 'Create permission' }
+        })
+        .state("admin.permissions", {
+            url: "/permissions",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/permission/list.html',
+                }
+            },
+            data: { pageTitle: 'Permission list' }
+        })
+
+
         .state("pages.login", {
             url: "/login",
             views: {

@@ -1,0 +1,27 @@
+<div ng-controller="PermissionCreateCtrl as ctrl">
+    <form name="addPermissionForm" ng-submit="ctrl.addPermission(addPermissionForm, ctrl.model)">
+        <md-input-container class="md-block">
+            <label>Permission name</label>
+            <input ng-model="ctrl.model.name">
+            <div ng-messages="ctrl.errors.name">
+                <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Codename</label>
+            <input ng-model="ctrl.model.codename">
+            <div ng-messages="ctrl.errors.codename">
+                <div ng-message="required" ng-repeat="message in ctrl.errors.codename">{{ message }}</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Content Type</label>
+            <md-select ng-model="ctrl.model.content_type">
+                <md-option ng-repeat="type in ctrl.contentTypes" value="{{type.id}}">
+                    {{type.app_label}}({{type.model}})
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-button class="md-raised md-primary" type="submit">Save</md-button>
+    </form>
+</div>

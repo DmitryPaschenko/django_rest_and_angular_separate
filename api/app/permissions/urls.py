@@ -3,6 +3,7 @@ from permissions import views
 
 
 urlpatterns = [
-    url(r'^$', views.PermList.as_view(), name='perm_list'),
+    url(r'^$', views.PermissionList.as_view(), name='permission_list'),
+    # url(r'contenttypes^$', views.ContentTypeList.as_view(), name='content_type_list'),
     # url('^(?P<id>\d+)/$', views.SingleUser.as_view(), name='single_permission')
 ]

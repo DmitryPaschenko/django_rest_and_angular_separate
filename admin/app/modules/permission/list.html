@@ -1,4 +1,4 @@
-<div ng-controller="UserListCtrl as ctrl">
+<div ng-controller="PermissionListCtrl as ctrl">
     <md-fab-toolbar md-open="ctrl.topMenuIsOpenConf.isOpen" count="ctrl.topMenuIsOpenConf.count"
                     md-direction="{{ctrl.topMenuIsOpenConf.selectedDirection}}">
         <md-fab-trigger class="align-with-text">
@@ -14,7 +14,7 @@
         </md-fab-trigger>
         <md-toolbar>
             <md-fab-actions class="md-toolbar-tools">
-                <a ui-sref="admin.users_create" class="top-menu-action">Add user</a>
+                <a ui-sref="admin.create_permission" class="top-menu-action">Add permission</a>
             </md-fab-actions>
         </md-toolbar>
     </md-fab-toolbar>
@@ -22,19 +22,13 @@
         <table md-table md-row-select multiple ng-model="ctrl.selected" md-progress="ctrl.promise">
             <thead md-head md-order="ctrl.query.order" md-on-reorder="ctrl.getListData">
             <tr md-row>
-                <th md-column md-order-by="username"><span>User Name</span></th>
-                <th md-column md-order-by="first_name"><span>First Name</span></th>
-                <th md-column md-order-by="last_name"><span>Last Name</span></th>
-                <th md-column md-order-by="email"><span>Email</span></th>
+                <th md-column md-order-by="name"><span>Permission Name</span></th>
             </tr>
             </thead>
             <tbody md-body>
-            <tr md-row md-select="item" md-select-id="username" md-auto-select
+            <tr md-row md-select="item" md-select-id="name" md-auto-select
                 ng-repeat="item in ctrl.listData.results">
-                <td md-cell><a ui-sref="admin.users_edit({userId:item.id})">{{item.username}}</a></td>
-                <td md-cell>{{item.firt_name}}</td>
-                <td md-cell>{{item.last_name}}</td>
-                <td md-cell>{{item.email}}</td>
+                <td md-cell>{{item.name}}</td>
             </tr>
             </tbody>
         </table>
