@@ -1,0 +1,33 @@
+<div ng-controller="UserCreateCtrl as ctrl">
+    <form name="registerForm" ng-submit="ctrl.register(registerForm)">
+        <md-input-container class="md-block">
+            <label>Username</label>
+            <input ng-model="ctrl.model.username">
+            <div ng-messages="ctrl.errors.username">
+                <div ng-message="required" ng-repeat="message in ctrl.errors.username">{{ message }}</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Email</label>
+            <input ng-model="ctrl.model.email">
+            <div ng-messages="ctrl.errors.email">
+                <div ng-message="required" ng-repeat="message in ctrl.errors.email">{{ message }}</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Password</label>
+            <input ng-model="ctrl.model.password1">
+            <div ng-messages="ctrl.errors.password1">
+                <div ng-message="required" ng-repeat="message in ctrl.errors.password1">{{ message }}</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Password(double)</label>
+            <input ng-model="ctrl.model.password2">
+            <div ng-messages="ctrl.errors.password2">
+                <div ng-message="required" ng-repeat="message in ctrl.errors.password2">{{ message }}</div>
+            </div>
+        </md-input-container>
+        <md-button class="md-raised md-primary" type="submit">Save</md-button>
+    </form>
+</div>

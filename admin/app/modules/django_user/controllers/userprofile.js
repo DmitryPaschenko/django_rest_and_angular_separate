@@ -2,7 +2,8 @@
 
 angular.module('AdminApp')
   .controller('UserprofileCtrl', function ($scope, djangoAuth, Validate) {
-    $scope.alerts = [];
+    $scope.preController();
+
 
     $scope.user_profile_model = {'first_name':'','last_name':'','email':''};
   	$scope.complete = false;

@@ -45,7 +45,7 @@ md-sidenav ng-md-icon {
 
 /*CUSTOM STILES*/
 #layout { height: 100%; }
-.top-alert {margin-bottom: 0px !important; margin-left: 15px; margin-right: 15px;}
+.top-alert {margin-bottom: 0px !important; margin-left: 15px; margin-right: 15px; margin-top: 10px;}
 
 /*LOGIN*/
 #layout #login-form { width: 400px; margin: auto; vertical-align: middle; }

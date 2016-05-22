@@ -1,7 +1,7 @@
 from users.serializers import UserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
 from rest_framework import status
 from rest_framework.renderers import TemplateHTMLRenderer
 import requests
@@ -45,7 +45,7 @@ class EmailVerificationSentView(APIView):
         return Response("Verification email has been sent.")
 
 
-class SingleUser(GenericAPIView):
+class SingleUser(RetrieveUpdateAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
 
@@ -61,6 +61,30 @@ class SingleUser(GenericAPIView):
         user_data = self.get_serializer_class()(user, context={'request': request}).data
 
         return Response(user_data)
+
+    def put(self, request, id):
+        try:
+            user = self.get_queryset().get(pk=int(id))
+            serializer = self.get_serializer_class()(user, data=request.data, context={'request': request})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        except get_user_model().DoesNotExist:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
+        serializer = self.get_serializer_class()(data=request.data, context={'request': request})
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserListView(ListAPIView):

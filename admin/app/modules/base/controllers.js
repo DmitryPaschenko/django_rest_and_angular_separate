@@ -1,4 +1,6 @@
-app.controller('AppCtrl', ['$scope', '$mdBottomSheet','$mdSidenav', '$mdDialog', 'djangoAuth', '$state', function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state){
+app.controller('AppCtrl',
+['$scope', '$mdBottomSheet','$mdSidenav', '$mdDialog', 'djangoAuth', '$state',
+function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state) {
     // Assume user is not logged in until we hear otherwise
     $scope.authenticated = false;
     // Wait for the status of authentication, set scope var to true if it resolves
@@ -70,36 +72,17 @@ app.controller('AppCtrl', ['$scope', '$mdBottomSheet','$mdSidenav', '$mdDialog',
       $scope.alerts.push({ type: type, msg: message });
   };
 
+  $scope.clearAlerts = function() {
+      // success, danger
+      $scope.alerts = [];
+  };
+
   $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
   };
+
+  $scope.preController = function() {
+      $scope.clearAlerts();
+  };
+
 }]);
-
-app.config(function($mdThemingProvider) {
-    var customBlueMap = 		$mdThemingProvider.extendPalette('light-blue', {
-        'contrastDefaultColor': 'light',
-        'contrastDarkColors': ['50'],
-        '50': 'ffffff'
-    });
-    $mdThemingProvider.definePalette('customBlue', customBlueMap);
-    $mdThemingProvider.theme('default')
-        .primaryPalette('customBlue', {
-            'default': '500',
-            'hue-1': '50'
-        })
-        .accentPalette('pink');
-    $mdThemingProvider.theme('input', 'default')
-        .primaryPalette('grey')
-});
-
-function DialogController($scope, $mdDialog) {
-  $scope.hide = function() {
-    $mdDialog.hide();
-  };
-  $scope.cancel = function() {
-    $mdDialog.cancel();
-  };
-  $scope.answer = function(answer) {
-    $mdDialog.hide(answer);
-  };
-};

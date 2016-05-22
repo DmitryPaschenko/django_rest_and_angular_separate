@@ -14,7 +14,7 @@
     </md-fab-trigger>
     <md-toolbar>
       <md-fab-actions class="md-toolbar-tools">
-          <a href="#" class="top-menu-action">Add user</a>
+          <a ui-sref="admin.users_create" class="top-menu-action">Add user</a>
       </md-fab-actions>
     </md-toolbar>
   </md-fab-toolbar>
@@ -31,7 +31,7 @@
             <tbody md-body>
             <tr md-row md-select="item" md-select-id="username" md-auto-select
                 ng-repeat="item in ctrl.listData.results">
-                <td md-cell><a ui-sref="admin.users.edit({userId:item.id})">{{item.username}}</a></td>
+                <td md-cell><a ui-sref="admin.users_edit({userId:item.id})">{{item.username}}</a></td>
                 <td md-cell>{{item.firt_name}}</td>
                 <td md-cell>{{item.last_name}}</td>
                 <td md-cell>{{item.email}}</td>

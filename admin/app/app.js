@@ -10,13 +10,35 @@ var app = angular.module('AdminApp', [
 
 var API_URL = '//127.0.0.1:8000/api/v1';
 
-app.run(['$rootScope', '$state', '$stateParams', 'djangoAuth', function ($rootScope,   $state,   $stateParams, djangoAuth) {
+app.run(['$rootScope', '$state', '$stateParams', 'djangoAuth', function ($rootScope, $state, $stateParams, djangoAuth) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
         djangoAuth.initialize('//127.0.0.1:8000/api/v1/rest-auth', false);
     }
   ]
 )
+.config(['$httpProvider', '$resourceProvider', '$mdThemingProvider',
+function($httpProvider, $resourceProvider, $mdThemingProvider) {
+    var customBlueMap = 		$mdThemingProvider.extendPalette('light-blue', {
+        'contrastDefaultColor': 'light',
+        'contrastDarkColors': ['50'],
+        '50': 'ffffff'
+    });
+    $mdThemingProvider.definePalette('customBlue', customBlueMap);
+    $mdThemingProvider.theme('default')
+        .primaryPalette('customBlue', {
+            'default': '500',
+            'hue-1': '50'
+        })
+        .accentPalette('pink');
+    $mdThemingProvider.theme('input', 'default')
+        .primaryPalette('grey')
+
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+    $resourceProvider.defaults.stripTrailingSlashes = false;
+}])
 .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider,   $urlRouterProvider) {
       $stateProvider
         .state('admin', {
@@ -67,6 +89,15 @@ app.run(['$rootScope', '$state', '$stateParams', 'djangoAuth', function ($rootSc
             },
             data: { pageTitle: 'Edit user' }
         })
+        .state("admin.users_create", {
+            url: "/users/create",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/user/create.html',
+                }
+            },
+            data: { pageTitle: 'Edit user' }
+        })
         .state("admin.users", {
             url: "/users",
             views: {
@@ -89,6 +120,16 @@ app.run(['$rootScope', '$state', '$stateParams', 'djangoAuth', function ($rootSc
         });
     }
   ]
-).config(function($resourceProvider) {
-  $resourceProvider.defaults.stripTrailingSlashes = false;
-});
+);
+
+function DialogController($scope, $mdDialog) {
+  $scope.hide = function() {
+    $mdDialog.hide();
+  };
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+  $scope.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+};

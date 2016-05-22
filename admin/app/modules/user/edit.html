@@ -1,5 +1,5 @@
 <div ng-controller="UserCtrl as ctrl">
-    <form name="userForm" ng-submit="updateUser(userForm, ctrl.model)">
+    <form name="userForm" ng-submit="ctrl.updateUser(userForm, ctrl.model)">
         <md-input-container class="md-block">
             <label>First Name</label>
             <input ng-model="ctrl.model.first_name">
