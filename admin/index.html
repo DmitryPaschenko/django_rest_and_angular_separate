@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Base Angular Admin Panel</title>
-    <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="libs/angular-material/angular-material.min.css">
     <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="libs/angular-material-data-table/dist/md-data-table.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body ng-app="AdminApp" layout="column" ng-controller="AppCtrl">
+
     <ui-view layout="row" name="layout" id="layout"></ui-view>
 
     <!-- Angular Material Dependencies -->
@@ -26,6 +27,7 @@
     <script src="libs/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="assets/js/ui-bootstrap-tpls-1.3.2.min.js"></script>
     <script src="libs/angular-material-data-table/dist/md-data-table.min.js"></script>
+    <script src="libs/angular-utils-ui-breadcrumbs/uiBreadcrumbs.js"></script>
 
 
     <script src="app/app.js"></script>

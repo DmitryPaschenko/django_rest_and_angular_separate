@@ -49,3 +49,8 @@ md-sidenav ng-md-icon {
 
 /*LOGIN*/
 #layout #login-form { width: 400px; margin: auto; vertical-align: middle; }
+
+/*ADMIN HEADER*/
+.breadcrumb { background-color: transparent; margin: 0; }
+.breadcrumb li a { text-decoration: none; color: white;}
+.breadcrumb li span { color: whitesmoke;}

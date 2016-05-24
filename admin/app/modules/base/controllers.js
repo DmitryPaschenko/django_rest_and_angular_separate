@@ -27,13 +27,13 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state) {
     };
     $scope.menu = [
     {
-      sref: 'admin.home',
+      sref: 'admin.main.home',
       srefOpts: {},
       title: 'Dashboard',
       icon: 'dashboard'
     },
     {
-      sref: 'admin.profile',
+      sref: 'admin.main.profile',
       srefOpts: {},
       title: 'Profile',
       icon: 'profile'
@@ -41,22 +41,22 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state) {
   ];
   $scope.admin = [
     {
-      sref: 'admin.users',
+      sref: 'admin.users.list',
       srefOpts: {},
       title: 'Users',
       icon: 'groups'
     },
     {
-      sref: 'admin.permissions',
+      sref: 'admin.permissions.list',
       srefOpts: {},
       title: 'User Permissions',
       icon: 'groups'
-    },
-    {
-      link : '',
-      title: 'Logout',
-      icon: 'logout'
     }
+//    {
+//      link : '',
+//      title: 'Logout',
+//      icon: 'logout'
+//    }
   ];
 
   $scope.alerts = [];
@@ -86,4 +86,5 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state) {
       $scope.clearAlerts();
   };
 
+//    $state.transitionTo('admin.home');
 }]);

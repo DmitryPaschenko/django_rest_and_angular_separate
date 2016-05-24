@@ -10,6 +10,12 @@ angular.module('AdminApp').factory('permissionService', function($resource, $coo
             });
         },
 
+        'getContenttypeResource': function () {
+            return $resource(API_URL + "/contenttypes/:id/", null, {
+                'get': { method:'GET', isArray:true }
+            });
+        },
+
         'getPermissionList': function (query) {
             return this.getPermissionResource().get(query);
         },
@@ -24,6 +30,10 @@ angular.module('AdminApp').factory('permissionService', function($resource, $coo
 
         'addPermission': function (data) {
             return this.getPermissionResource().save({}, data);
-        }
+        },
+
+        'getContenttypeList': function (query) {
+            return this.getContenttypeResource().get(query);
+        },
     }
 });

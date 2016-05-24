@@ -58,6 +58,7 @@ angular.module('AdminApp').controller('UserCtrl', function ($scope, $stateParams
 
         function onSuccess(response) {
             self.model = response;
+            $scope.userTitle = self.model.username;
         }
 
         function onError(response) {
@@ -101,7 +102,7 @@ angular.module('AdminApp').controller('UserCreateCtrl', function ($scope, $state
             djangoAuth.register(self.model.username,self.model.password1,self.model.password2,self.model.email)
             .then(function(data){
         	    $scope.addSuccessAlert('User created!');
-                $state.go('admin.users');
+                $state.go('admin.users.list');
             },function(data){
                 for(var index in data) {
                     if (index !== 'status') {

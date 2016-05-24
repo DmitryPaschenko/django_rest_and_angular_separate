@@ -14,7 +14,7 @@
         </md-fab-trigger>
         <md-toolbar>
             <md-fab-actions class="md-toolbar-tools">
-                <a ui-sref="admin.create_permission" class="top-menu-action">Add permission</a>
+                <a ui-sref="admin.permissions.create" class="top-menu-action">Add permission</a>
             </md-fab-actions>
         </md-toolbar>
     </md-fab-toolbar>
@@ -28,7 +28,7 @@
             <tbody md-body>
             <tr md-row md-select="item" md-select-id="name" md-auto-select
                 ng-repeat="item in ctrl.listData.results">
-                <td md-cell>{{item.name}}</td>
+                <td md-cell><a ui-sref="admin.permissions.edit({id:item.id})">{{item.name}}</a></td>
             </tr>
             </tbody>
         </table>

@@ -6,7 +6,8 @@ var app = angular.module('AdminApp', [
     'ngResource',
     'ngSanitize',
     'ui.bootstrap',
-    'md.data.table']);
+    'md.data.table',
+    'angularUtils.directives.uiBreadcrumbs']);
 
 var API_URL = '//127.0.0.1:8000/api/v1';
 
@@ -62,72 +63,103 @@ function($httpProvider, $resourceProvider, $mdThemingProvider) {
                 }
             }
         })
-        .state("admin.home", {
+
+        .state("admin.main", {
+            abstract: true,
+            data: {
+                proxy: 'admin.main.home'
+            }
+        })
+        .state("admin.main.home", {
             url: "/",
             views: {
                 'content': {
                     templateUrl: '/app/modules/dashboard/dashboard.html'
-                }
+                },
             },
-            data: { pageTitle: 'Dashboard' }
+            data: {
+                displayName: 'Dashboard'
+            }
         })
-        .state("admin.profile", {
+        .state("admin.main.profile", {
             url: "/profile",
             views: {
                 'content': {
                     templateUrl: '/app/modules/user/profile.html',
                 }
             },
-            data: { pageTitle: 'Profile' }
+            data: { displayName: 'Profile' }
         })
 
 
-        .state("admin.users_edit", {
+        .state('admin.users', {
+            abstract: true,
+            data: {
+                proxy: 'admin.users.list'
+            },
+        })
+        .state("admin.users.edit", {
             url: "/users/{userId:[0-9]+}",
             views: {
                 'content': {
                     templateUrl: '/app/modules/user/edit.html',
                 }
             },
-            data: { pageTitle: 'Edit user' }
+            data: { displayName: 'Edit user' }
         })
-        .state("admin.users_create", {
+        .state("admin.users.create", {
             url: "/users/create",
             views: {
                 'content': {
                     templateUrl: '/app/modules/user/create.html',
                 }
             },
-            data: { pageTitle: 'Edit user' }
+            data: { displayName: 'Create user' }
         })
-        .state("admin.users", {
+        .state("admin.users.list", {
             url: "/users",
             views: {
                 'content': {
                     templateUrl: '/app/modules/user/list.html',
                 }
             },
-            data: { pageTitle: 'Users list' }
+            data: {
+                displayName: 'Users list'
+            }
         })
 
-
-        .state("admin.create_permission", {
+        .state('admin.permissions', {
+            abstract: true,
+            data: {
+                proxy: 'admin.permissions.list'
+            },
+        })
+        .state("admin.permissions.edit", {
+            url: "/permissions/{id:[0-9]+}",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/permission/edit.html',
+                }
+            },
+            data: { displayName: 'Edit permission' }
+        })
+        .state("admin.permissions.create", {
             url: "/permissions/create",
             views: {
                 'content': {
                     templateUrl: '/app/modules/permission/create.html',
                 }
             },
-            data: { pageTitle: 'Create permission' }
+            data: { displayName: 'Create permission' }
         })
-        .state("admin.permissions", {
+        .state("admin.permissions.list", {
             url: "/permissions",
             views: {
                 'content': {
                     templateUrl: '/app/modules/permission/list.html',
                 }
             },
-            data: { pageTitle: 'Permission list' }
+            data: { displayName: 'Permission list' }
         })
 
 

@@ -47,20 +47,25 @@ angular.module('AdminApp').controller('PermissionListCtrl', function ($scope, pe
 
 angular.module('AdminApp').controller('PermissionCtrl', function ($scope, $stateParams, permissionService) {
     var self = this;
-    var id = $stateParams.userId;
+    var id = $stateParams.id;
 
     $scope.preController();
 
+    self.contentTypes = [];
+    permissionService.getContenttypeList({}).$promise.then(function (response){
+        self.contentTypes = response;
+    });
+
     self.getObject = function (id) {
         // Change this
-        self.promise = userService.getUser(id).$promise;
+        self.promise = permissionService.getPermission(id).$promise;
 
         function onSuccess(response) {
             self.model = response;
         }
 
         function onError(response) {
-            var errorText = response.data.detail === undefined ? 'Get list data error.' : response.data.detail;
+            var errorText = response.data.detail === undefined ? 'Get permission data error.' : response.data.detail;
             $scope.addDangerAlert('Danger! ' + errorText);
         }
 
@@ -68,8 +73,8 @@ angular.module('AdminApp').controller('PermissionCtrl', function ($scope, $state
     };
 
 
-    self.updateUser = function(formData, model){
-        console.log(formData, model);
+    self.updateObject = function(formData, model){
+
         function onSuccess(response) {
             self.model = response;
             $scope.addSuccessAlert('User data saved!')
@@ -79,7 +84,7 @@ angular.module('AdminApp').controller('PermissionCtrl', function ($scope, $state
             var errorText = response.data.detail === undefined ? 'Save user data error.' : response.data.detail;
             $scope.addDangerAlert('Danger! ' + errorText);
         }
-        userService.saveUser(id, model).$promise.then(onSuccess, onError);
+        permissionService.savePermission(id, model).$promise.then(onSuccess, onError);
 
     }
 
@@ -91,16 +96,10 @@ angular.module('AdminApp').controller('PermissionCreateCtrl', function ($scope, 
 
     $scope.preController();
 
-    self.contentTypes = [{
-        "id": 8,
-        "app_label": "account",
-        "model": "emailaddress"
-      },
-      {
-        "id": 9,
-        "app_label": "account",
-        "model": "emailconfirmation"
-      }];
+    self.contentTypes = [];
+    permissionService.getContenttypeList({}).$promise.then(function (response){
+        self.contentTypes = response;
+    });
 
     self.model = {'name': '', 'codename': '', 'content_type': ''};
 
@@ -109,7 +108,7 @@ angular.module('AdminApp').controller('PermissionCreateCtrl', function ($scope, 
 
         function onSuccess(response) {
             $scope.addSuccessAlert('User data saved!')
-            $state.go('admin.permissions');
+            $state.go('admin.permissions.list');
         }
 
         function onError(response) {
