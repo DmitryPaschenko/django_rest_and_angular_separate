@@ -185,9 +185,10 @@ angular.module('AdminApp')
             }else{
                 // There isn't a stored value, or we're forcing a request back to
                 // the API to get the authentication status.
-                this.authPromise.then(function(){
+                this.authPromise.then(function(data){
                     da.authenticated = true;
                     getAuthStatus.resolve();
+                    $rootScope.currentUserData = data;
                 },function(){
                     da.authenticated = false;
                     if(restrict){

@@ -6,8 +6,8 @@
             <div layout="column" class="md-toolbar-tools-bottom inset">
                 <profile-avatar></profile-avatar>
                 <span></span>
-                <div>Firstname Lastname</div>
-                <div>email@domainname.com</div>
+                <div>{{ currentUserData.first_name }} {{ currentUserData.last_name }}</div>
+                <div>{{ currentUserData.email }}</div>
             </div>
         </md-toolbar>
         <md-list>
