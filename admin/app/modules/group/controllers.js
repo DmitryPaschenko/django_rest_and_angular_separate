@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('AdminApp').controller('PermissionListCtrl', function ($scope, permissionService) {
+angular.module('AdminApp').controller('GroupListCtrl', function ($scope, groupService) {
     var self = this;
 
     $scope.preController();
@@ -9,16 +9,7 @@ angular.module('AdminApp').controller('PermissionListCtrl', function ($scope, pe
     self.listData = [];
     self.filter = {};
 
-    self.options = {
-        rowSelection: true,
-        multiSelect: true,
-        autoSelect: true,
-        decapitate: false,
-        largeEditDialog: false,
-        boundaryLinks: false,
-        limitSelect: true,
-        pageSelect: true
-    };
+    self.options = getListTableOptions();
 
     // Change this
     self.query = {
@@ -29,7 +20,7 @@ angular.module('AdminApp').controller('PermissionListCtrl', function ($scope, pe
 
     self.getListData = function () {
         // Change this
-        self.promise = permissionService.getPermissionList($scope.merge_objects(self.query, self.filter)).$promise;
+        self.promise = groupService.getGroupList($scope.merge_objects(self.query, self.filter)).$promise;
 
         function onSuccess(response) {
             self.listData = response;
@@ -55,27 +46,22 @@ angular.module('AdminApp').controller('PermissionListCtrl', function ($scope, pe
     self.getListData();
 });
 
-angular.module('AdminApp').controller('PermissionCtrl', function ($scope, $stateParams, permissionService) {
+angular.module('AdminApp').controller('GroupCtrl', function ($scope, $stateParams, groupService) {
     var self = this;
     var id = $stateParams.id;
 
     $scope.preController();
 
-    self.contentTypes = [];
-    permissionService.getContenttypeList({}).$promise.then(function (response){
-        self.contentTypes = response;
-    });
-
     self.getObject = function (id) {
         // Change this
-        self.promise = permissionService.getPermission(id).$promise;
+        self.promise = groupService.getGroup(id).$promise;
 
         function onSuccess(response) {
             self.model = response;
         }
 
         function onError(response) {
-            var errorText = response.data.detail === undefined ? 'Get permission data error.' : response.data.detail;
+            var errorText = response.data.detail === undefined ? 'Get group data error.' : response.data.detail;
             $scope.addDangerAlert('Danger! ' + errorText);
         }
 
@@ -87,45 +73,45 @@ angular.module('AdminApp').controller('PermissionCtrl', function ($scope, $state
 
         function onSuccess(response) {
             self.model = response;
-            $scope.addSuccessAlert('User data saved!')
+            $scope.addSuccessAlert('Group data saved!')
         }
 
         function onError(response) {
-            var errorText = response.data.detail === undefined ? 'Save user data error.' : response.data.detail;
+            var errorText = response.data.detail === undefined ? 'Save group data error.' : response.data.detail;
             $scope.addDangerAlert('Danger! ' + errorText);
         }
-        permissionService.savePermission(id, model).$promise.then(onSuccess, onError);
+        groupService.saveGroup(id, model).$promise.then(onSuccess, onError);
 
     }
 
     self.getObject(id);
 });
 
-angular.module('AdminApp').controller('PermissionCreateCtrl', function ($scope, $stateParams, permissionService, $state) {
+angular.module('AdminApp').controller('GroupCreateCtrl', function ($scope, $stateParams, groupService, $state) {
     var self = this;
 
     $scope.preController();
 
-    self.contentTypes = [];
-    permissionService.getContenttypeList({}).$promise.then(function (response){
-        self.contentTypes = response;
-    });
+    self.model = {'name': ''};
 
-    self.model = {'name': '', 'codename': '', 'content_type': ''};
-
-    self.addPermission = function(formData, model){
+    self.addObject = function(formData, model){
         $scope.clearAlerts();
 
         function onSuccess(response) {
             $scope.addSuccessAlert('User data saved!')
-            $state.go('admin.permissions.list');
+            $state.go('admin.groups.list');
         }
 
         function onError(response) {
-            var errorText = response.data.detail === undefined ? 'Save permission data error.' : response.data.detail;
+            var errorText = 'Save group data error.';
+            if (response.data.detail !== undefined) {
+                if (typeof response.data.detail === 'string')
+                    errorText = response.data.detail;
+
+                self.errors = response.data.detail;
+            }
             $scope.addDangerAlert('Danger! ' + errorText);
         }
-        permissionService.addPermission(model).$promise.then(onSuccess, onError);
-
+        groupService.addGroup(model).$promise.then(onSuccess, onError);
     }
 });

@@ -51,6 +51,12 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state, $mdM
       srefOpts: {},
       title: 'User Permissions',
       icon: 'groups'
+    },
+    {
+      sref: 'admin.groups.list',
+      srefOpts: {},
+      title: 'User Groups',
+      icon: 'groups'
     }
 //    {
 //      link : '',
@@ -125,3 +131,16 @@ function FilterDialogController($scope, $mdDialog, ctrl) {
 
   $scope.listCtrl = ctrl;
 };
+
+function getListTableOptions() {
+    return {
+        rowSelection: true,
+        multiSelect: true,
+        autoSelect: true,
+        decapitate: false,
+        largeEditDialog: false,
+        boundaryLinks: false,
+        limitSelect: true,
+        pageSelect: true
+    };
+}

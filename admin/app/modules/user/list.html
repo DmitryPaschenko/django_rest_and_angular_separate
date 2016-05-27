@@ -1,28 +1,9 @@
 <div ng-controller="UserListCtrl as ctrl">
-    <md-fab-toolbar md-open="ctrl.topMenuIsOpenConf.isOpen" count="ctrl.topMenuIsOpenConf.count"
-                    md-direction="{{ctrl.topMenuIsOpenConf.selectedDirection}}">
-        <md-fab-trigger class="align-with-text">
-            <md-button aria-label="menu" class="md-fab md-primary">
-                <md-icon class="ng-scope" aria-hidden="true" style="transition-delay: 0ms;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 18 18" fit=""
-                         preserveAspectRatio="xMidYMid meet" focusable="false">
-                        <path d="M0 0h18v18h-18z" fill="none"></path>
-                        <path d="M2 13.5h14v-1.5h-14v1.5zm0-4h14v-1.5h-14v1.5zm0-5.5v1.5h14v-1.5h-14z"></path>
-                    </svg>
-                </md-icon>
-            </md-button>
-        </md-fab-trigger>
-        <md-toolbar>
-            <md-fab-actions class="md-toolbar-tools">
-                <a ui-sref="admin.users.create" class="top-menu-action">Add user</a>
-            </md-fab-actions>
-        </md-toolbar>
-    </md-fab-toolbar>
-
     <md-toolbar class="md-table-toolbar md-default" ng-hide="ctrl.options.rowSelection && ctrl.selected.length">
         <div class="md-toolbar-tools">
             <span>Users list</span>
             <div flex></div>
+            <md-button class="md-primary md-hue-1" ui-sref="admin.users.create">Add</md-button>
             <md-button class="md-primary md-hue-1" ng-click="showFilterPopup($event, 'app/modules/user/_list_filter.html', ctrl)">Filter</md-button>
             <md-button class="md-icon-button" ng-click="ctrl.clearFilter()">
                 <md-icon>refresh</md-icon>

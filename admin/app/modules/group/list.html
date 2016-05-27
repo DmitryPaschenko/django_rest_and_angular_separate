@@ -1,10 +1,10 @@
-<div ng-controller="PermissionListCtrl as ctrl">
+<div ng-controller="GroupListCtrl as ctrl">
     <md-toolbar class="md-table-toolbar md-default" ng-hide="ctrl.options.rowSelection && ctrl.selected.length">
         <div class="md-toolbar-tools">
-            <span>Users list</span>
+            <span>Group list</span>
             <div flex></div>
-            <md-button class="md-primary md-hue-1" ui-sref="admin.permissions.create">Add</md-button>
-            <md-button class="md-primary md-hue-1" ng-click="showFilterPopup($event, 'app/modules/permission/_list_filter.html', ctrl)">Filter</md-button>
+            <md-button class="md-primary md-hue-1" ui-sref="admin.groups.create">Add</md-button>
+            <md-button class="md-primary md-hue-1" ng-click="showFilterPopup($event, 'app/modules/group/_list_filter.html', ctrl)">Filter</md-button>
             <md-button class="md-icon-button" ng-click="ctrl.clearFilter()">
                 <md-icon>refresh</md-icon>
             </md-button>
@@ -32,13 +32,13 @@
                 </th>
             </tr>
             <tr md-row>
-                <th md-column md-order-by="name"><span>Permission Name</span></th>
+                <th md-column md-order-by="name"><span>Group Name</span></th>
             </tr>
             </thead>
             <tbody md-body>
             <tr md-row md-select="item" md-select-id="name" md-auto-select="ctrl.options.autoSelect"
                 ng-repeat="item in ctrl.listData.results">
-                <td md-cell><a ui-sref="admin.permissions.edit({id:item.id})">{{item.name}}</a></td>
+                <td md-cell><a ui-sref="admin.groups.edit({id:item.id})">{{item.name}}</a></td>
             </tr>
             </tbody>
         </table>

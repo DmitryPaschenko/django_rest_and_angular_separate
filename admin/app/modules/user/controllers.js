@@ -1,14 +1,5 @@
 'use strict';
 
-function configureTopMenu(self) {
-    self.topMenuIsOpenConf = {
-        isOpen: false,
-        count: 0,
-        selectedDirection: 'left'
-    };
-    return self;
-}
-
 angular.module('AdminApp').controller('UserListCtrl', function ($scope, userService) {
     var self = this;
 
@@ -32,7 +23,7 @@ angular.module('AdminApp').controller('UserListCtrl', function ($scope, userServ
     // Change this
     self.query = {
         order: 'username',
-        limit: 20,
+        limit: 10,
         page: 1
     };
 
@@ -62,9 +53,6 @@ angular.module('AdminApp').controller('UserListCtrl', function ($scope, userServ
     };
 
     self.getListData();
-
-    // Top menu block
-    self = configureTopMenu(self);
 });
 
 

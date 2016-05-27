@@ -165,6 +165,41 @@ function($httpProvider, $resourceProvider, $mdThemingProvider) {
         })
 
 
+        .state('admin.groups', {
+            abstract: true,
+            data: {
+                proxy: 'admin.groups.list'
+            },
+        })
+        .state("admin.groups.edit", {
+            url: "/groups/{id:[0-9]+}",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/group/edit.html',
+                }
+            },
+            data: { displayName: 'Edit groups' }
+        })
+        .state("admin.groups.create", {
+            url: "/groups/create",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/group/create.html',
+                }
+            },
+            data: { displayName: 'Create groups' }
+        })
+        .state("admin.groups.list", {
+            url: "/groups",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/group/list.html',
+                }
+            },
+            data: { displayName: 'Group list' }
+        })
+
+
         .state("pages.login", {
             url: "/login",
             views: {

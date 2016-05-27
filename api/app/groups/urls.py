@@ -3,6 +3,6 @@ from groups import views
 
 
 urlpatterns = [
-    url(r'^$', views.GroupSerializer.as_view(), name='group_list'),
-    # url('^(?P<id>\d+)/$', views.SingleUser.as_view(), name='single_permission')
+    url(r'^$', views.GroupList.as_view(), name='group_list'),
+    url('^(?P<id>\d+)/$', views.SingleGroup.as_view(), name='single_group')
 ]
