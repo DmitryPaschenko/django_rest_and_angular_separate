@@ -54,3 +54,8 @@ md-sidenav ng-md-icon {
 .breadcrumb { background-color: transparent; margin: 0; }
 .breadcrumb li a { text-decoration: none; color: white;}
 .breadcrumb li span { color: whitesmoke;}
+
+/* FILTERS */
+.filter-dialog {
+    width: 500px;
+}

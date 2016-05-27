@@ -1,6 +1,6 @@
 app.controller('AppCtrl',
-['$scope', '$mdBottomSheet','$mdSidenav', '$mdDialog', 'djangoAuth', '$state',
-function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state) {
+['$scope', '$mdBottomSheet','$mdSidenav', '$mdDialog', 'djangoAuth', '$state', '$mdMedia',
+function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state, $mdMedia) {
     // Assume user is not logged in until we hear otherwise
     $scope.authenticated = false;
     // Wait for the status of authentication, set scope var to true if it resolves
@@ -86,5 +86,42 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state) {
       $scope.clearAlerts();
   };
 
+    $scope.showFilterPopup = function(ev, templateUrl, ctrl) {
+        var customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && customFullscreen;
+        $mdDialog.show({
+          controller: FilterDialogController,
+          templateUrl: templateUrl,
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          fullscreen: useFullScreen,
+          locals: {
+            ctrl: ctrl
+          }
+        });
+    };
+
+    $scope.merge_objects = function (obj1,obj2){
+        var obj3 = {};
+        for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
+        for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+        return obj3;
+    }
 //    $state.transitionTo('admin.home');
 }]);
+
+
+function FilterDialogController($scope, $mdDialog, ctrl) {
+  $scope.hide = function() {
+    $mdDialog.hide();
+  };
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+  $scope.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+
+  $scope.listCtrl = ctrl;
+};

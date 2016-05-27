@@ -1,0 +1,28 @@
+{
+  "name": "angular-clear-input",
+  "version": "0.1.0",
+  "homepage": "https://github.com/one-logic/angular-clear-input",
+  "authors": [
+    "Sebastian Henneberg"
+  ],
+  "description": "A clear input plugin for AngularJS",
+  "main": "angular-clear-input.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.0",
+    "commit": "b8696160469803d9ecc5486a411bed97db1f5911"
+  },
+  "_source": "https://github.com/one-logic/angular-clear-input.git",
+  "_target": "~0.1.0",
+  "_originalSource": "angular-clear-input",
+  "_direct": true
+}

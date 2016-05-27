@@ -16,6 +16,19 @@ angular.module('AdminApp').controller('UserListCtrl', function ($scope, userServ
 
     self.selected = [];
     self.listData = [];
+    self.filter = {};
+
+    self.options = {
+        rowSelection: true,
+        multiSelect: true,
+        autoSelect: true,
+        decapitate: false,
+        largeEditDialog: false,
+        boundaryLinks: false,
+        limitSelect: true,
+        pageSelect: true
+    };
+
     // Change this
     self.query = {
         order: 'username',
@@ -25,7 +38,7 @@ angular.module('AdminApp').controller('UserListCtrl', function ($scope, userServ
 
     self.getListData = function () {
         // Change this
-        self.promise = userService.getUserList(self.query).$promise;
+        self.promise = userService.getUserList($scope.merge_objects(self.query, self.filter)).$promise;
 
         function onSuccess(response) {
             self.listData = response;
@@ -37,6 +50,15 @@ angular.module('AdminApp').controller('UserListCtrl', function ($scope, userServ
         }
 
         self.promise.then(onSuccess, onError);
+    };
+
+    self.clearFilter = function (filterName) {
+        if (filterName == undefined) {
+            self.filter = {};
+        } else {
+            self.filter[filterName] = '';
+        }
+        self.getListData();
     };
 
     self.getListData();

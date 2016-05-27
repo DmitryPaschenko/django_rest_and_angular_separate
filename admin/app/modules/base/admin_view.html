@@ -1,54 +1,59 @@
-<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="true">
-    <md-toolbar class="md-tall md-hue-2">
-        <span flex></span>
-        <div layout="column" class="md-toolbar-tools-bottom inset">
-            <profile-avatar></profile-avatar>
-            <span></span>
-            <div>Firstname Lastname</div>
-            <div>email@domainname.com</div>
-        </div>
-    </md-toolbar>
-    <md-list>
-        <md-item ng-repeat="item in menu">
-            <a ui-sref="{{item.sref}}" ui-sref-opts="{{item.srefOpts}}">
-                <md-item-content md-ink-ripple layout="row" layout-align="start center">
-                    <div class="inset">
-                        <ng-md-icon icon="{{item.icon}}"></ng-md-icon>
-                    </div>
-                    <div class="inset">{{item.title}}
-                    </div>
-                </md-item-content>
-            </a>
-        </md-item>
-        <md-divider></md-divider>
-        <md-subheader>Management</md-subheader>
-        <md-item ng-repeat="item in admin">
-            <a ui-sref="{{item.sref}}" ui-sref-opts="{{item.srefOpts}}">
-                <md-item-content md-ink-ripple layout="row" layout-align="start center">
-                    <div class="inset">
-                        <ng-md-icon icon="{{item.icon}}"></ng-md-icon>
-                    </div>
-                    <div class="inset">{{item.title}}
-                    </div>
-                </md-item-content>
-            </a>
-        </md-item>
-    </md-list>
-</md-sidenav>
-<div layout="column" class="relative" layout-fill role="main">
-    <md-toolbar ng-show="!showSearch">
-        <div class="md-toolbar-tools">
-            <ui-breadcrumbs displayname-property="data.displayName" abstract-proxy-property="data.proxy"
-                            template-url="/app/modules/base/breadcrumbs.html"></ui-breadcrumbs>
+<ui-view layout="row" layout-fill layout-padding>
+    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left"
+                md-is-locked-open="true">
+        <md-toolbar class="md-tall md-hue-2">
             <span flex></span>
-        </div>
-    </md-toolbar>
-    <md-content flex md-scroll-y>
-        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" class="top-alert">
-            {{alert.msg}}
-        </uib-alert>
-        <!--<ui-view>-->
-            <ui-view name="content" layout="column" layout-fill layout-padding>Blank Content</ui-view>
-        <!--</ui-view>-->
-    </md-content>
-</div>
+            <div layout="column" class="md-toolbar-tools-bottom inset">
+                <profile-avatar></profile-avatar>
+                <span></span>
+                <div>Firstname Lastname</div>
+                <div>email@domainname.com</div>
+            </div>
+        </md-toolbar>
+        <md-list>
+            <md-item ng-repeat="item in menu">
+                <a ui-sref="{{item.sref}}" ui-sref-opts="{{item.srefOpts}}">
+                    <md-item-content md-ink-ripple layout="row" layout-align="start center">
+                        <div class="inset">
+                            <ng-md-icon icon="{{item.icon}}"></ng-md-icon>
+                        </div>
+                        <div class="inset">{{item.title}}
+                        </div>
+                    </md-item-content>
+                </a>
+            </md-item>
+            <md-divider></md-divider>
+            <md-subheader>Management</md-subheader>
+            <md-item ng-repeat="item in admin">
+                <a ui-sref="{{item.sref}}" ui-sref-opts="{{item.srefOpts}}">
+                    <md-item-content md-ink-ripple layout="row" layout-align="start center">
+                        <div class="inset">
+                            <ng-md-icon icon="{{item.icon}}"></ng-md-icon>
+                        </div>
+                        <div class="inset">{{item.title}}
+                        </div>
+                    </md-item-content>
+                </a>
+            </md-item>
+        </md-list>
+    </md-sidenav>
+    <div layout="column" class="relative" layout-fill role="main">
+        <md-toolbar ng-show="!showSearch">
+            <div class="md-toolbar-tools">
+                <ui-breadcrumbs displayname-property="data.displayName" abstract-proxy-property="data.proxy"
+                                template-url="/app/modules/base/breadcrumbs.html"></ui-breadcrumbs>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+
+        <md-content flex md-scroll-y>
+            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" class="top-alert">
+                {{alert.msg}}
+            </uib-alert>
+            <!--<div ui-view>-->
+            <div ui-view="content" layout="column" layout-fill layout-padding>Loading...</div>
+            <!--</div>-->
+        </md-content>
+
+    </div>
+</ui-view>

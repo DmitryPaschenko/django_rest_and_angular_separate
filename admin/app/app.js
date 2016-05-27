@@ -7,7 +7,8 @@ var app = angular.module('AdminApp', [
     'ngSanitize',
     'ui.bootstrap',
     'md.data.table',
-    'angularUtils.directives.uiBreadcrumbs']);
+    'angularUtils.directives.uiBreadcrumbs',
+    'dcbClearInput']);
 
 var API_URL = '//127.0.0.1:8000/api/v1';
 
@@ -40,14 +41,14 @@ function($httpProvider, $resourceProvider, $mdThemingProvider) {
 
     $resourceProvider.defaults.stripTrailingSlashes = false;
 }])
-.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider,   $urlRouterProvider) {
+.config(['$stateProvider', function ($stateProvider) {
       $stateProvider
         .state('admin', {
             abstract: true,
             views: {
                 'layout': {
                     templateUrl: '/app/modules/base/admin_view.html'
-                }
+                },
             },
             resolve: {
               authenticated: ['djangoAuth', function(djangoAuth) {
@@ -120,9 +121,10 @@ function($httpProvider, $resourceProvider, $mdThemingProvider) {
             url: "/users",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/user/list.html',
-                }
+                            templateUrl: '/app/modules/user/list.html',
+                        }
             },
+
             data: {
                 displayName: 'Users list'
             }
@@ -189,3 +191,15 @@ function DialogController($scope, $mdDialog) {
     $mdDialog.hide(answer);
   };
 };
+
+//function showFilterDialog($scope, $mdDialog) {
+//  $scope.hide = function() {
+//    $mdDialog.hide();
+//  };
+//  $scope.cancel = function() {
+//    $mdDialog.cancel();
+//  };
+//  $scope.answer = function(answer) {
+//    $mdDialog.hide(answer);
+//  };
+//};

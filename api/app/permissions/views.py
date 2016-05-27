@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import filters
 from dp_base_libs.paginations import DPAngularTablePagination
+from permissions.filters import PermissionFilter
 
 
 class PermissionList(ListCreateAPIView):
@@ -12,6 +13,8 @@ class PermissionList(ListCreateAPIView):
     pagination_class = DPAngularTablePagination
     queryset = Permission.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    filter_class = PermissionFilter
+    search_fields = ('name', 'codename')
     ordering_fields = (
         'name', 'codename'
     )
