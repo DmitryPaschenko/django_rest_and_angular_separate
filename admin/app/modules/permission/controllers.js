@@ -94,6 +94,13 @@ angular.module('AdminApp').controller('PermissionCtrl', function ($scope, $state
             var errorText = response.data.detail === undefined ? 'Save user data error.' : response.data.detail;
             $scope.addDangerAlert('Danger! ' + errorText);
         }
+
+        self.model.user_set = self.model.users.map(function(user) {
+            return user.id;
+        });
+
+        self.model.users = undefined;
+
         permissionService.savePermission(id, model).$promise.then(onSuccess, onError);
 
     }
@@ -111,7 +118,7 @@ angular.module('AdminApp').controller('PermissionCreateCtrl', function ($scope, 
         self.contentTypes = response;
     });
 
-    self.model = {'name': '', 'codename': '', 'content_type': ''};
+    self.model = {'name': '', 'codename': '', 'content_type': '', 'users': []};
 
     self.addPermission = function(formData, model){
         $scope.clearAlerts();
@@ -125,6 +132,13 @@ angular.module('AdminApp').controller('PermissionCreateCtrl', function ($scope, 
             var errorText = response.data.detail === undefined ? 'Save permission data error.' : response.data.detail;
             $scope.addDangerAlert('Danger! ' + errorText);
         }
+
+        self.model.user_set = self.model.users.map(function(user) {
+            return user.id;
+        });
+
+        self.model.users = undefined;
+
         permissionService.addPermission(model).$promise.then(onSuccess, onError);
 
     }

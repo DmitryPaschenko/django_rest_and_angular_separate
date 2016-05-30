@@ -19,6 +19,19 @@ app.directive('ngEnter', function () {
     };
 });
 
+app.directive('dpUserChips', function () {
+    return {
+        replace: true,
+        controller: 'userChipsCtrl',
+        controllerAs: 'userChipsCtrl',
+        template: '<div layout="column" ng-cloak><md-content class="md-padding autocomplete" layout="column"><md-contact-chips ng-model="userChipsCtrl.userModel" md-contacts="userChipsCtrl.delayedQuerySearch($query)" md-contact-name="username" md-contact-email="email" md-require-match="true" md-highlight-flags="i" placeholder="Related Users"> </md-contact-chips> </md-content></div>',
+        scope: {
+            userModel: '='
+        },
+        bindToController: true
+    }
+});
+
 //
 //app.directive('updateTitle', ['$rootScope', '$timeout',
 //  function($rootScope, $timeout) {

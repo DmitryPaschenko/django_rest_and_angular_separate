@@ -7,6 +7,9 @@
                 <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>
             </div>
         </md-input-container>
+
+        <div dp-user-chips user-model="ctrl.model.users"></div>
+
         <md-button class="md-raised md-primary" type="submit">Save</md-button>
     </form>
 </div>

@@ -70,6 +70,12 @@ angular.module('AdminApp').controller('GroupCtrl', function ($scope, $stateParam
 
 
     self.updateObject = function(formData, model){
+        $scope.clearAlerts();
+        model.user_set = model.users.map(function(user) {
+            return user.id;
+        });
+
+        model.users = undefined;
 
         function onSuccess(response) {
             self.model = response;
@@ -92,10 +98,16 @@ angular.module('AdminApp').controller('GroupCreateCtrl', function ($scope, $stat
 
     $scope.preController();
 
-    self.model = {'name': ''};
+    self.model = {'name': '', 'users': []};
 
     self.addObject = function(formData, model){
         $scope.clearAlerts();
+
+        self.model.user_set = self.model.users.map(function(user) {
+            return user.id;
+        });
+
+        self.model.users = undefined;
 
         function onSuccess(response) {
             $scope.addSuccessAlert('User data saved!')
