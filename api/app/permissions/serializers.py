@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import Permission
 from django.contrib.auth.models import ContentType
 from users.serializers import UserSerializer
+from dp_base_libs.serializers import DPDynamicFieldsModelSerializer
 
 
 class ContentTypeSerializer(serializers.ModelSerializer):
@@ -11,8 +12,9 @@ class ContentTypeSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'app_label', 'model')
 
 
-class PermissionSerializer(serializers.ModelSerializer):
-    users = UserSerializer(source='user_set', many=True, required=False)
+class PermissionSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
+    users = UserSerializer(source='user_set', many=True, read_only=True)
+
     class Meta:
         model = Permission
         fields = (

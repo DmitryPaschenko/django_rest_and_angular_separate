@@ -75,8 +75,6 @@ angular.module('AdminApp').controller('GroupCtrl', function ($scope, $stateParam
             return user.id;
         });
 
-        model.users = undefined;
-
         function onSuccess(response) {
             self.model = response;
             $scope.addSuccessAlert('Group data saved!')
@@ -106,8 +104,6 @@ angular.module('AdminApp').controller('GroupCreateCtrl', function ($scope, $stat
         self.model.user_set = self.model.users.map(function(user) {
             return user.id;
         });
-
-        self.model.users = undefined;
 
         function onSuccess(response) {
             $scope.addSuccessAlert('User data saved!')

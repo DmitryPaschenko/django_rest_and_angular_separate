@@ -28,6 +28,8 @@
                 <div ng-message="required" ng-repeat="message in ctrl.errors.password2">{{ message }}</div>
             </div>
         </md-input-container>
+        <div dp-permission-chips permission-model="ctrl.model.permissions"></div>
+        <div dp-group-chips group-model="ctrl.model.groups_list"></div>
         <md-button class="md-raised md-primary" type="submit">Save</md-button>
     </form>
 </div>

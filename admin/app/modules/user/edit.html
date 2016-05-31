@@ -12,6 +12,8 @@
             <label>Email</label>
             <input ng-model="ctrl.model.email">
         </md-input-container>
+        <div dp-permission-chips permission-model="ctrl.model.permissions"></div>
+        <div dp-group-chips group-model="ctrl.model.groups_list"></div>
         <md-button class="md-raised md-primary" type="submit">Save</md-button>
     </form>
 </div>

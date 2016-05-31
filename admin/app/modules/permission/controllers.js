@@ -24,7 +24,8 @@ angular.module('AdminApp').controller('PermissionListCtrl', function ($scope, pe
     self.query = {
         order: 'name',
         limit: 10,
-        page: 1
+        page: 1,
+        fields: 'id,name'
     };
 
     self.getListData = function () {
@@ -99,8 +100,6 @@ angular.module('AdminApp').controller('PermissionCtrl', function ($scope, $state
             return user.id;
         });
 
-        self.model.users = undefined;
-
         permissionService.savePermission(id, model).$promise.then(onSuccess, onError);
 
     }
@@ -136,8 +135,6 @@ angular.module('AdminApp').controller('PermissionCreateCtrl', function ($scope, 
         self.model.user_set = self.model.users.map(function(user) {
             return user.id;
         });
-
-        self.model.users = undefined;
 
         permissionService.addPermission(model).$promise.then(onSuccess, onError);
 

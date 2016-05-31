@@ -32,6 +32,33 @@ app.directive('dpUserChips', function () {
     }
 });
 
+app.directive('dpPermissionChips', function () {
+    return {
+        replace: true,
+        controller: 'permissionChipsCtrl',
+        controllerAs: 'permissionChipsCtrl',
+        template: '<div layout="column" ng-cloak><md-content class="md-padding autocomplete" layout="column"><md-contact-chips ng-model="permissionChipsCtrl.permissionModel" md-contacts="permissionChipsCtrl.delayedQuerySearch($query)" md-contact-name="name" md-require-match="true" md-highlight-flags="i" placeholder="Related Permission"> </md-contact-chips> </md-content></div>',
+        scope: {
+            permissionModel: '='
+        },
+        bindToController: true
+    }
+});
+
+app.directive('dpGroupChips', function () {
+    return {
+        replace: true,
+        controller: 'groupChipsCtrl',
+        controllerAs: 'groupChipsCtrl',
+        template: '<div layout="column" ng-cloak><md-content class="md-padding autocomplete" layout="column"><md-contact-chips ng-model="groupChipsCtrl.groupModel" md-contacts="groupChipsCtrl.delayedQuerySearch($query)" md-contact-name="name" md-require-match="true" md-highlight-flags="i" placeholder="Related Groups"> </md-contact-chips> </md-content></div>',
+        scope: {
+            groupModel: '='
+        },
+        bindToController: true
+    }
+});
+
+
 //
 //app.directive('updateTitle', ['$rootScope', '$timeout',
 //  function($rootScope, $timeout) {

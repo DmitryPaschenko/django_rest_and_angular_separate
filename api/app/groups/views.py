@@ -14,7 +14,6 @@ class GroupList(ListCreateAPIView):
     queryset = Group.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = GroupFilter
-    search_fields = ('name')
     ordering_fields = (
         'name'
     )

@@ -90,6 +90,15 @@ angular.module('AdminApp').controller('UserCtrl', function ($scope, $stateParams
             var errorText = response.data.detail === undefined ? 'Save user data error.' : response.data.detail;
             $scope.addDangerAlert('Danger! ' + errorText);
         }
+
+        model.user_permissions = model.permissions.map(function(permissions) {
+            return permissions.id;
+        });
+
+        model.groups = model.groups_list.map(function(groups) {
+            return groups.id;
+        });
+
         userService.saveUser(id, model).$promise.then(onSuccess, onError);
 
     }

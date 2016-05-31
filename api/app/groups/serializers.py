@@ -4,7 +4,7 @@ from users.serializers import UserSerializer
 
 
 class GroupSerializer(serializers.ModelSerializer):
-    users = UserSerializer(source='user_set', many=True, required=False)
+    users = UserSerializer(source='user_set', many=True, read_only=True)
     class Meta:
         model = Group
         fields = (
