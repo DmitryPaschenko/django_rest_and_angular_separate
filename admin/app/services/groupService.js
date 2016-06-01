@@ -1,12 +1,13 @@
 'use strict';
 
-angular.module('AdminApp').factory('groupService', function($resource, $cookies) {
+angular.module('AdminApp').factory('groupService', function($resource, $cookies, $q) {
     return {
         'getGroupResource': function () {
             return $resource(API_URL + "/groups/:id/", null, {
                 'get': { method:'GET' },
                 'save': { method:'POST' },
-                'update': { method:'PUT' }
+                'update': { method:'PUT' },
+                'remove': {method: 'DELETE'}
             });
         },
 
@@ -24,6 +25,20 @@ angular.module('AdminApp').factory('groupService', function($resource, $cookies)
 
         'addGroup': function (data) {
             return this.getGroupResource().save({}, data);
+        },
+
+        'removeGroup': function (id) {
+            return this.getGroupResource().remove({id: id});
+        },
+
+        'removeGroups': function (ids) {
+            var self = this;
+            var promises = [];
+            ids.forEach(function(id) {
+                promises.push(self.removeGroup(id).$promise);
+            });
+
+            return $q.all(promises);
         }
     }
 });

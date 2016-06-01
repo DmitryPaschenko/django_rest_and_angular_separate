@@ -108,6 +108,17 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state, $mdM
         });
     };
 
+    $scope.deleteAction = function(ev, deleteFunction) {
+        var confirm = $mdDialog.confirm()
+          .title('Would you like to delete this items?')
+          .targetEvent(ev)
+          .ok('Delete')
+          .cancel('Cancel');
+        $mdDialog.show(confirm).then(function() {
+          deleteFunction()
+        }, function() {});
+    };
+
     $scope.merge_objects = function (obj1,obj2){
         var obj3 = {};
         for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }

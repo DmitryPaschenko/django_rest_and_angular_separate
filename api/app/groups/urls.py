@@ -4,5 +4,5 @@ from groups import views
 
 urlpatterns = [
     url(r'^$', views.GroupList.as_view(), name='group_list'),
-    url('^(?P<id>\d+)/$', views.SingleGroup.as_view(), name='single_group')
+    url('^(?P<pk>\d+)/$', views.SingleGroup.as_view(), name='single_group')
 ]

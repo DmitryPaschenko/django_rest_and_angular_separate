@@ -14,10 +14,10 @@
     <md-toolbar class="md-table-toolbar alternate" ng-show="ctrl.options.rowSelection && ctrl.selected.length">
         <div class="md-toolbar-tools" layout-align="space-between">
             <span>{{ctrl.selected.length}} {{ctrl.selected.length > 1 ? 'items' : 'item'}} selected</span>
-            <!--<button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="delete($event)" aria-label="delete">-->
-                <!--<md-icon class="material-icons">delete</md-icon>-->
-                <!--<div class="md-ripple-container"></div>-->
-            <!--</button>-->
+            <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="deleteAction($event, ctrl.batchDelete)" aria-label="delete">
+                <md-icon class="material-icons">delete</md-icon>
+                <div class="md-ripple-container"></div>
+            </button>
         </div>
     </md-toolbar>
 

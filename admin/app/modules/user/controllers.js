@@ -52,6 +52,22 @@ angular.module('AdminApp').controller('UserListCtrl', function ($scope, userServ
         self.getListData();
     };
 
+    self.batchDelete = function () {
+        $scope.clearAlerts();
+        var ids = self.selected.map(function(item) {
+            return item.id;
+        });
+
+        var success = userService.removeUsers(ids).then(function(data) {
+            $scope.addSuccessAlert('Users deleted!');
+            self.getListData();
+            self.selected = [];
+        }, function(err) {
+            $scope.addDangerAlert('Danger! Users deleted error!');
+            self.getListData();
+        });
+    };
+
     self.getListData();
 });
 

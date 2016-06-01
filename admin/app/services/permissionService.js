@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('AdminApp').factory('permissionService', function($resource, $cookies) {
+angular.module('AdminApp').factory('permissionService', function($resource, $cookies, $q) {
     return {
         'getPermissionResource': function () {
             return $resource(API_URL + "/permissions/:id/", null, {
@@ -35,5 +35,19 @@ angular.module('AdminApp').factory('permissionService', function($resource, $coo
         'getContenttypeList': function (query) {
             return this.getContenttypeResource().get(query);
         },
+
+        'removePermission': function (id) {
+            return this.getPermissionResource().remove({id: id});
+        },
+
+        'removePermissions': function (ids) {
+            var self = this;
+            var promises = [];
+            ids.forEach(function(id) {
+                promises.push(self.removePermission(id).$promise);
+            });
+
+            return $q.all(promises);
+        }
     }
 });

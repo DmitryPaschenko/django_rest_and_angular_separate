@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('AdminApp').factory('userService', function($resource, $cookies) {
+angular.module('AdminApp').factory('userService', function($resource, $cookies, $q) {
     return {
         'getUserResource': function () {
             return $resource(API_URL + "/users/:id/", null, {
@@ -20,6 +20,20 @@ angular.module('AdminApp').factory('userService', function($resource, $cookies) 
         'saveUser': function (id, data) {
             var savedData = data;
             return this.getUserResource().update({id: id}, savedData);
+        },
+
+        'removeUser': function (id) {
+            return this.getUserResource().remove({id: id});
+        },
+
+        'removeUsers': function (ids) {
+            var self = this;
+            var promises = [];
+            ids.forEach(function(id) {
+                promises.push(self.removeUser(id).$promise);
+            });
+
+            return $q.all(promises);
         }
     }
 });

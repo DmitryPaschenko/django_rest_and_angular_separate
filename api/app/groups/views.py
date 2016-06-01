@@ -1,5 +1,5 @@
 from groups.serializers import GroupSerializer
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from dp_base_libs.paginations import DPAngularTablePagination
 from django.contrib.auth.models import Group
 from rest_framework import status
@@ -30,25 +30,25 @@ class GroupList(ListCreateAPIView):
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
 
-class SingleGroup(RetrieveUpdateAPIView):
+class SingleGroup(RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
-    def get(self, request, id):
+    def get(self, request, pk):
         """
         Get user's data by it's id
         """
         try:
-            item = self.get_queryset().get(pk=int(id))
+            item = self.get_queryset().get(pk=int(pk))
             data = self.get_serializer_class()(item, context={'request': request}).data
 
             return Response(data)
         except Group.DoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
-    def put(self, request, id):
+    def put(self, request, pk):
         try:
-            item = self.get_queryset().get(pk=int(id))
+            item = self.get_queryset().get(pk=int(pk))
             serializer = self.get_serializer_class()(item, data=request.data, context={'request': request})
             if serializer.is_valid():
                 serializer.save()

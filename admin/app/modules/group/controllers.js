@@ -43,6 +43,22 @@ angular.module('AdminApp').controller('GroupListCtrl', function ($scope, groupSe
         self.getListData();
     };
 
+    self.batchDelete = function () {
+        $scope.clearAlerts();
+        var ids = self.selected.map(function(item) {
+            return item.id;
+        });
+
+        var success = groupService.removeGroups(ids).then(function(data) {
+            $scope.addSuccessAlert('Groups deleted!');
+            self.getListData();
+            self.selected = [];
+        }, function(err) {
+            $scope.addDangerAlert('Danger! Groups deleted error!');
+            self.getListData();
+        });
+    };
+
     self.getListData();
 });
 

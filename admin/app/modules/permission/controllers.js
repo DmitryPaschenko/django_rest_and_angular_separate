@@ -53,6 +53,22 @@ angular.module('AdminApp').controller('PermissionListCtrl', function ($scope, pe
         self.getListData();
     };
 
+    self.batchDelete = function () {
+        $scope.clearAlerts();
+        var ids = self.selected.map(function(item) {
+            return item.id;
+        });
+
+        var success = permissionService.removePermissions(ids).then(function(data) {
+            $scope.addSuccessAlert('Permissions deleted!');
+            self.getListData();
+            self.selected = [];
+        }, function(err) {
+            $scope.addDangerAlert('Danger! Permissions deleted error!');
+            self.getListData();
+        });
+    };
+
     self.getListData();
 });
 

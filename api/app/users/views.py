@@ -1,7 +1,7 @@
 from users.serializers import UserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
 from rest_framework.renderers import TemplateHTMLRenderer
 import requests
@@ -46,16 +46,16 @@ class EmailVerificationSentView(APIView):
         return Response("Verification email has been sent.")
 
 
-class SingleUser(RetrieveUpdateAPIView):
+class SingleUser(RetrieveUpdateDestroyAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
 
-    def get(self, request, id):
+    def get(self, request, pk):
         """
         Get user's data by it's id
         """
         try:
-            user = self.get_queryset().get(pk=int(id))
+            user = self.get_queryset().get(pk=int(pk))
         except get_user_model().DoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
@@ -63,9 +63,9 @@ class SingleUser(RetrieveUpdateAPIView):
 
         return Response(user_data)
 
-    def put(self, request, id):
+    def put(self, request, pk):
         try:
-            user = self.get_queryset().get(pk=int(id))
+            user = self.get_queryset().get(pk=int(pk))
             serializer = self.get_serializer_class()(user, data=request.data, context={'request': request})
             if serializer.is_valid():
                 serializer.save()
