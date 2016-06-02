@@ -57,6 +57,12 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state, $mdM
       srefOpts: {},
       title: 'User Groups',
       icon: 'groups'
+    },
+    {
+      sref: 'admin.templates.list',
+      srefOpts: {},
+      title: 'Document Templates',
+      icon: 'templates'
     }
 //    {
 //      link : '',

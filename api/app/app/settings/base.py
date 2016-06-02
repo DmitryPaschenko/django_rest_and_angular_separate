@@ -50,7 +50,9 @@ INSTALLED_APPS = (
     'users',
     'permissions',
     'groups',
-    'dp_base_libs'
+    'dp_base_libs',
+
+    'documents'
 )
 
 MIDDLEWARE_CLASSES = (

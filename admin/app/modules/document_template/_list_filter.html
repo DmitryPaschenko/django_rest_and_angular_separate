@@ -1,0 +1,25 @@
+<md-dialog class="filter-dialog" aria-label="Template list filter" ng-cloak>
+    <form ng-submit="listCtrl.getListData(); cancel();">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Template list filter</h2>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-card>
+                    <md-input-container class="md-block">
+                        <label>Template name</label>
+                        <input ng-model="listCtrl.filter.name">
+                    </md-input-container>
+                </md-card>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button type="submit">Filter</md-button>
+            <md-button ng-click="listCtrl.clearFilter(); cancel();">Clear All Filter</md-button>
+            <md-button ng-click="cancel()" style="margin-right:20px;">Close</md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

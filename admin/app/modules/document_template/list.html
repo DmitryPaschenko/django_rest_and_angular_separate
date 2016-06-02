@@ -1,0 +1,51 @@
+<div ng-controller="DocumentTemplateListCtrl as ctrl">
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="ctrl.options.rowSelection && ctrl.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Template list</span>
+            <div flex></div>
+            <md-button class="md-primary md-hue-1" ui-sref="admin.templates.create">Add</md-button>
+            <md-button class="md-primary md-hue-1" ng-click="showFilterPopup($event, 'app/modules/template/_list_filter.html', ctrl)">Filter</md-button>
+            <md-button class="md-icon-button" ng-click="ctrl.clearFilter()">
+                <md-icon>refresh</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-table-toolbar alternate" ng-show="ctrl.options.rowSelection && ctrl.selected.length">
+        <div class="md-toolbar-tools" layout-align="space-between">
+            <span>{{ctrl.selected.length}} {{ctrl.selected.length > 1 ? 'items' : 'item'}} selected</span>
+            <button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="deleteAction($event, ctrl.batchDelete)" aria-label="delete">
+                <md-icon class="material-icons">delete</md-icon>
+                <div class="md-ripple-container"></div>
+            </button>
+        </div>
+    </md-toolbar>
+
+    <md-table-container>
+        <table md-table md-row-select="ctrl.options.rowSelection" multiple ng-model="ctrl.selected" md-progress="ctrl.promise">
+            <thead md-head md-order="ctrl.query.order" md-on-reorder="ctrl.getListData">
+            <tr>
+                <th md-column>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <input ng-enter="ctrl.getListData()" ng-model="ctrl.filter.search" placeholder="Input text for Search and press Enter" clear-btn-markup='<i class="material-icons">highlight_off</i>' clear-input="ctrl.clearFilter('search')">
+                    </md-input-container>
+                </th>
+            </tr>
+            <tr md-row>
+                <th md-column md-order-by="name"><span>Template Name</span></th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row md-select="item" md-select-id="name" md-auto-select="ctrl.options.autoSelect"
+                ng-repeat="item in ctrl.listData.results">
+                <td md-cell><a ui-sref="admin.templates.edit({id:item.id})">{{item.name}}</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <md-table-pagination md-limit="ctrl.query.limit" md-limit-options="[10, 20, 50]" md-page="ctrl.query.page"
+                         md-total="{{ctrl.listData.count}}" md-on-paginate="ctrl.getListData"
+                         md-page-select></md-table-pagination>
+
+</div>

@@ -1,0 +1,13 @@
+<div ng-controller="GroupCtrl as ctrl">
+    <form name="groupForm" ng-submit="ctrl.updateObject(groupForm, ctrl.model)">
+        <md-input-container class="md-block">
+            <label>Group name</label>
+            <input ng-model="ctrl.model.name">
+            <div ng-messages="ctrl.errors.name">
+                <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>
+            </div>
+        </md-input-container>
+        <div dp-user-chips user-model="ctrl.model.users"></div>
+        <md-button class="md-raised md-primary" type="submit">Save</md-button>
+    </form>
+</div>

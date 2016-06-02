@@ -200,6 +200,41 @@ function($httpProvider, $resourceProvider, $mdThemingProvider) {
         })
 
 
+        .state('admin.templates', {
+            abstract: true,
+            data: {
+                proxy: 'admin.templates.list'
+            },
+        })
+        .state("admin.templates.edit", {
+            url: "/templates/{id:[0-9]+}",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/document_template/edit.html',
+                }
+            },
+            data: { displayName: 'Edit templates' }
+        })
+        .state("admin.templates.create", {
+            url: "/templates/create",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/document_template/create.html',
+                }
+            },
+            data: { displayName: 'Create templates' }
+        })
+        .state("admin.templates.list", {
+            url: "/templates",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/document_template/list.html',
+                }
+            },
+            data: { displayName: 'Template list' }
+        })
+
+
         .state("pages.login", {
             url: "/login",
             views: {

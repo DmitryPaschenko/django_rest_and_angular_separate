@@ -1,10 +1,9 @@
 from django.conf.urls import include, url
-from users import urls as user_api_urls
-from permissions import permissions_urls as permissions_api_urls
-from permissions import contenttypes_urls as contenttypes_api_urls
+from documents.urls import template_urls as document_template_url, template_field_urls
 from groups import urls as groups_api_url
-# from permissions import views as permissions_view
-# from app.users
+from permissions import contenttypes_urls as contenttypes_api_urls
+from permissions import permissions_urls as permissions_api_urls
+from users import urls as user_api_urls
 
 api_urls = [
     url(r'^rest-auth/', include('rest_auth.urls')),
@@ -14,6 +13,9 @@ api_urls = [
     url(r'^contenttypes/', include(contenttypes_api_urls, namespace="contenttypes")),
     url(r'^groups/', include(groups_api_url, namespace="groups")),
     url(r'^users/', include(user_api_urls)),
+
+    url(r'^templates/', include(document_template_url, namespace="document_templates")),
+    url(r'^template-fields/', include(template_field_urls, namespace="document_template_fields")),
 ]
 
 urlpatterns = [
