@@ -1,16 +1,8 @@
 from rest_framework import serializers
 from users.serializers import UserSerializer
+from groups.serializers import GroupSerializer
 from dp_base_libs.serializers import DPDynamicFieldsModelSerializer
-from documents.models import DocumentTemplate, DocumentTemplateField, DocumentStep, Document, DocumentValues
-
-
-class DocumentTemplateSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
-    creators_list = UserSerializer(source='creators', many=True, read_only=True)
-    owner_data = UserSerializer(source='owner', read_only=True)
-
-    class Meta:
-        model = DocumentTemplate
-        fields = ('id', 'name', 'owner', 'owner_data', 'creators', 'creators_list')
+from documents.models import DocumentTemplate, DocumentTemplateField, DocumentTemplateStep, Document, DocumentValues
 
 
 class DocumentTemplateFieldSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
@@ -19,16 +11,27 @@ class DocumentTemplateFieldSerializer(DPDynamicFieldsModelSerializer, serializer
         fields = ('id', 'name', 'template', 'widget')
 
 
-class DocumentStepSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
-    members_list = UserSerializer(source='members', many=True, read_only=True)
-    editors_list = UserSerializer(source='editors', many=True, read_only=True)
-    viewers_list = UserSerializer(source='viewers', many=True, read_only=True)
+class DocumentTemplateStepSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
+    members_group_data = GroupSerializer(source='members_group', read_only=True)
+    editors_group_data = GroupSerializer(source='editors_group', read_only=True)
+    viewers_group_data = GroupSerializer(source='viewers_group', read_only=True)
 
     class Meta:
-        model = DocumentStep
+        model = DocumentTemplateStep
         fields = (
-            'id', 'name', 'step_number', 'members', 'editors', 'viewers', 'members_list', 'editors_list', 'viewers_list'
+            'id', 'name', 'step_number', 'members_group', 'editors_group', 'viewers_group', 'members_group_data',
+            'editors_group_data', 'viewers_group_data', 'template'
         )
+
+
+class DocumentTemplateSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
+    creators_group_data = GroupSerializer(source='creators_group', read_only=True)
+    template_fields = DocumentTemplateFieldSerializer(source='document_template_fields', many=True, read_only=True)
+    template_steps = DocumentTemplateStepSerializer(source='document_template_steps', many=True, read_only=True)
+
+    class Meta:
+        model = DocumentTemplate
+        fields = ('id', 'name', 'creators_group', 'creators_group_data', 'template_fields', 'template_steps')
 
 
 class DocumentSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):

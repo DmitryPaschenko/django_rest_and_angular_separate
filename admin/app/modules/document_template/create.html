@@ -1,13 +1,107 @@
 <div ng-controller="DocumentTemplateCreateCtrl as ctrl">
-    <form name="addTemplateForm" ng-submit="ctrl.addObject(addTemplateForm, ctrl.model)">
-        <md-input-container class="md-block">
-            <label>Template name</label>
-            <input ng-model="ctrl.model.name">
-            <div ng-messages="ctrl.errors.name">
-                <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>
-            </div>
-        </md-input-container>
+    <md-card>
+        <form name="addTemplateForm" ng-submit="ctrl.addObject(addTemplateForm, ctrl.model)">
+            <md-input-container class="md-block">
+                <label>Template name</label>
+                <input ng-model="ctrl.model.name">
+                <div ng-messages="ctrl.errors.name">
+                    <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>What group can create document?</label>
+                <md-select ng-model="ctrl.model.creators_group">
+                    <md-option ng-repeat="group in ctrl.groups" value="{{group.id}}">
+                        {{group.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
 
-        <md-button class="md-raised md-primary" type="submit">Save</md-button>
-    </form>
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Document fields</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div layout-gt-sm="row" ng-repeat="template_field in ctrl.model.template_fields">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Name</label>
+                            <input ng-model="template_field.name">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Widget</label>
+                            <md-select ng-model="template_field.widget" class="md-block" flex-gt-sm>
+                                <md-option ng-repeat="widget in ctrl.field_widgets" value="{{widget.key}}">
+                                    {{widget.title}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button ng-click="ctrl.addField()">Add new field</md-button>
+                </md-card-actions>
+            </md-card>
+
+
+
+
+
+
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Document steps</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div layout-gt-sm="row" ng-repeat="template_step in ctrl.model.template_steps">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Name</label>
+                            <input ng-model="template_step.name">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Members group</label>
+                            <md-select ng-model="template_step.members_group">
+                                <md-option ng-repeat="group in ctrl.groups" value="{{group.id}}">
+                                    {{group.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Members group</label>
+                            <md-select ng-model="template_step.editors_group">
+                                <md-option ng-repeat="group in ctrl.groups" value="{{group.id}}">
+                                    {{group.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Members group</label>
+                            <md-select ng-model="template_step.viewers_group">
+                                <md-option ng-repeat="group in ctrl.groups" value="{{group.id}}">
+                                    {{group.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button ng-click="ctrl.addStep()">Add new step</md-button>
+                </md-card-actions>
+            </md-card>
+
+
+
+
+
+
+
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button class="md-raised md-primary" type="submit">Save</md-button>
+            </md-card-actions>
+
+        </form>
+    </md-card>
 </div>

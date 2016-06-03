@@ -5,6 +5,7 @@ angular.module('AdminApp').factory('groupService', function($resource, $cookies,
         'getGroupResource': function () {
             return $resource(API_URL + "/groups/:id/", null, {
                 'get': { method:'GET' },
+                'getAll': { method:'GET', isArray:true},
                 'save': { method:'POST' },
                 'update': { method:'PUT' },
                 'remove': {method: 'DELETE'}
@@ -13,6 +14,11 @@ angular.module('AdminApp').factory('groupService', function($resource, $cookies,
 
         'getGroupList': function (query) {
             return this.getGroupResource().get(query);
+        },
+
+        'getAllGroups': function (query) {
+            query.limit = 0;
+            return this.getGroupResource().getAll(query);
         },
 
         'getGroup': function (id) {

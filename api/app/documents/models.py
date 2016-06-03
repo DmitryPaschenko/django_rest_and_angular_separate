@@ -1,12 +1,14 @@
 from django.db import models
 from django.conf import settings
 from dp_base_libs.models import DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable
+from django.contrib.auth.models import Group
 
 
 class DocumentTemplate(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
     name = models.CharField(max_length=255, null=False, blank=False)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, related_name='document_owner')
-    creators = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='document_creators')  # Who can create this document
+    description = models.TextField(blank=True, null=True, default='')
+    # owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, related_name='document_owner')
+    creators_group = models.ForeignKey(Group, blank=False, related_name='group_creators') # Who can create this document
 
     class Meta:
         ordering = ['name']
@@ -21,7 +23,7 @@ class DocumentTemplateField(DPAbstractModel, DPAbstractSignable, DPAbstractTimes
         (WIDGET_TEXT,       'TEXT'),
         (WIDGET_CALCULATED, 'Calculated Field')
     )
-    template = models.ForeignKey(DocumentTemplate, null=False, blank=False, related_name='document_template')
+    template = models.ForeignKey(DocumentTemplate, null=False, blank=False, related_name='document_template_fields')
     name = models.CharField(max_length=255, null=False, blank=False)
     widget = models.CharField(max_length=50, choices=WIDGETS, default=WIDGET_STRING, help_text='field widget')
 
@@ -29,12 +31,13 @@ class DocumentTemplateField(DPAbstractModel, DPAbstractSignable, DPAbstractTimes
         ordering = ['name']
 
 
-class DocumentStep(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
+class DocumentTemplateStep(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
+    template = models.ForeignKey(DocumentTemplate, null=False, blank=False, related_name='document_template_steps')
     step_number = models.SmallIntegerField(null=False, blank=False, default=0)
     name = models.CharField(max_length=255, null=False, blank=False)
-    members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='step_members')
-    editors = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='step_editors')
-    viewers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='step_viewers')
+    members_group = models.ForeignKey(Group, blank=False, related_name='members_group')
+    editors_group = models.ForeignKey(Group, blank=False, related_name='editors_group')
+    viewers_group = models.ForeignKey(Group, blank=False, related_name='viewers_group')
 
     class Meta:
         ordering = ['name']
@@ -56,7 +59,7 @@ class Document(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
 
     name = models.CharField(max_length=255, null=False, blank=False)
     status = models.CharField(max_length=50, choices=STATUSES, default=STATUS_NEW, help_text='document status')
-    step = models.ForeignKey(DocumentStep, null=False, blank=False, related_name='document_step')
+    step = models.ForeignKey(DocumentTemplateStep, null=False, blank=False, related_name='document_step')
 
     class Meta:
         ordering = ['name']

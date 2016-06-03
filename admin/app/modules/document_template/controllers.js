@@ -107,19 +107,46 @@ angular.module('AdminApp').controller('DocumentTemplateCtrl', function ($scope, 
     self.getObject(id);
 });
 
-angular.module('AdminApp').controller('DocumentTemplateCreateCtrl', function ($scope, $stateParams, documentTemplateService, $state) {
+angular.module('AdminApp').controller('DocumentTemplateCreateCtrl', function ($scope, $stateParams, documentTemplateService, $state, groupService) {
     var self = this;
 
     $scope.preController();
 
-    self.model = {'name': '', 'users': []};
+    self.model = {
+        'name': '',
+
+        'template_fields': [{name: '', widget: ''}],
+        'template_steps': [{name: '', members_group: '', editors_group: '', viewers_group: ''}]
+    };
+
+    self.field_widgets = [
+        {
+            key: 'string',
+            title: 'String'
+        },
+        {
+            key: 'text',
+            title: 'Text'
+        },
+        {
+            key: 'calculated',
+            title: 'Calculated'
+        }
+    ];
+
+    /* GET GROUP DATA */
+    self.groups = [];
+    groupService.getAllGroups({}).$promise.then(
+        function (response) {
+            self.groups = response;
+        },
+        function (response) {
+            $scope.addDangerAlert('Danger! Group list did not retrieve');
+        }
+    );
 
     self.addObject = function(formData, model){
         $scope.clearAlerts();
-
-//        self.model.user_set = self.model.users.map(function(user) {
-//            return user.id;
-//        });
 
         function onSuccess(response) {
             $scope.addSuccessAlert('User data saved!')
@@ -137,5 +164,15 @@ angular.module('AdminApp').controller('DocumentTemplateCreateCtrl', function ($s
             $scope.addDangerAlert('Danger! ' + errorText);
         }
         documentTemplateService.addTemplate(model).$promise.then(onSuccess, onError);
-    }
+    };
+
+    self.addField = function(){
+        var newField = {name: '', template: ''};
+        self.model.template_fields.push(newField);
+    };
+
+    self.addStep = function(){
+        var newStep = {name: '', members_group: '', editors_group: '', viewers_group: ''};
+        self.model.template_steps.push(newStep);
+    };
 });
