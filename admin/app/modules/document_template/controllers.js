@@ -62,11 +62,24 @@ angular.module('AdminApp').controller('DocumentTemplateListCtrl', function ($sco
     self.getListData();
 });
 
-angular.module('AdminApp').controller('DocumentTemplateCtrl', function ($scope, $stateParams, documentTemplateService) {
+angular.module('AdminApp').controller('DocumentTemplateCtrl', function ($scope, $stateParams, documentTemplateService, groupService) {
     var self = this;
     var id = $stateParams.id;
 
     $scope.preController();
+
+    self.field_widgets = getTemplateWidgets();
+
+    /* GET GROUP DATA */
+    self.groups = [];
+    groupService.getAllGroups({}).$promise.then(
+        function (response) {
+            self.groups = response;
+        },
+        function (response) {
+            $scope.addDangerAlert('Danger! Group list did not retrieve');
+        }
+    );
 
     self.getObject = function (id) {
         // Change this
@@ -87,9 +100,6 @@ angular.module('AdminApp').controller('DocumentTemplateCtrl', function ($scope, 
 
     self.updateObject = function(formData, model){
         $scope.clearAlerts();
-//        model.user_set = model.users.map(function(user) {
-//            return user.id;
-//        });
 
         function onSuccess(response) {
             self.model = response;
@@ -119,20 +129,7 @@ angular.module('AdminApp').controller('DocumentTemplateCreateCtrl', function ($s
         'template_steps': [{name: '', members_group: '', editors_group: '', viewers_group: ''}]
     };
 
-    self.field_widgets = [
-        {
-            key: 'string',
-            title: 'String'
-        },
-        {
-            key: 'text',
-            title: 'Text'
-        },
-        {
-            key: 'calculated',
-            title: 'Calculated'
-        }
-    ];
+    self.field_widgets = getTemplateWidgets();
 
     /* GET GROUP DATA */
     self.groups = [];
@@ -176,3 +173,20 @@ angular.module('AdminApp').controller('DocumentTemplateCreateCtrl', function ($s
         self.model.template_steps.push(newStep);
     };
 });
+
+function getTemplateWidgets() {
+    return self.field_widgets = [
+        {
+            key: 'string',
+            title: 'String'
+        },
+        {
+            key: 'text',
+            title: 'Text'
+        },
+        {
+            key: 'calculated',
+            title: 'Calculated'
+        }
+    ];
+}

@@ -52,6 +52,27 @@ class DocumentTemplateSerializer(DPDynamicFieldsModelSerializer, serializers.Mod
 
         return template
 
+    def update(self, instance, validated_data):
+        template_fields = self.context.get('template_fields')
+        template_steps = self.context.get('template_steps')
+
+        instance = super(DocumentTemplateSerializer, self).update(instance, validated_data)
+
+        for field in template_fields:
+            field['template'] = instance
+            field_obj = DocumentTemplateField(**field)
+            field_obj.save()
+
+        for step_data in template_steps:
+            step_data['template'] = instance
+            step_data['members_group'] = Group.objects.get(id=step_data.get('members_group'))
+            step_data['editors_group'] = Group.objects.get(id=step_data.get('editors_group'))
+            step_data['viewers_group'] = Group.objects.get(id=step_data.get('viewers_group'))
+            step = DocumentTemplateStep(**step_data)
+            step.save()
+
+        return instance
+
 
 class DocumentSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
     class Meta:
