@@ -6,7 +6,6 @@ from dp_base_libs.paginations import DPAngularTablePagination
 from documents.models import DocumentTemplate, DocumentTemplateField
 from documents.serializers import DocumentTemplateSerializer, DocumentTemplateFieldSerializer, DocumentTemplateStepSerializer
 from documents.filters import DocumentTemplateFilter, DocumentTemplateFieldFilter
-from django.db import transaction
 
 
 class DocumentTemplateList(ListCreateAPIView):
@@ -21,7 +20,12 @@ class DocumentTemplateList(ListCreateAPIView):
 
     def post(self, request):
         try:
-            serializer = self.get_serializer_class()(data=request.data, context={'request': request})
+            data = request.data
+            template_fields = data.pop('template_fields')
+            template_steps = data.pop('template_steps')
+            serializer = self.get_serializer_class()(data=request.data, context={
+                'request': request, 'template_fields': template_fields, 'template_steps': template_steps}
+            )
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -29,39 +33,6 @@ class DocumentTemplateList(ListCreateAPIView):
                 return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         except DocumentTemplate.DoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
-
-
-# def post(self, request):
-#     try:
-#         fields = request.data.pop('template_fields')
-#         steps = request.data.pop('template_steps')
-#
-#         template_serializer = self.get_serializer_class()(data=request.data, context={'request': request})
-#         if template_serializer.is_valid():
-#             template_serializer.save()
-#             template_id = template_serializer.data.get('id')
-#
-#             # for field in fields:
-#             #     field['template'] = template_id
-#             field_serializer = DocumentTemplateFieldSerializer(data=fields, many=True)
-#             if field_serializer.is_valid():
-#                 field_serializer.save()
-#             else:
-#                 return Response({"detail": field_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-#
-#             for step in steps:
-#                 step['template'] = template_id
-#             steps_serializer = DocumentTemplateStepSerializer(data=steps, many=True)
-#             if steps_serializer.is_valid():
-#                 steps_serializer.save()
-#             else:
-#                 return Response({"detail": steps_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-#
-#             return Response(template_serializer.data, status=status.HTTP_200_OK)
-#         else:
-#             return Response({"detail": template_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-#     except DocumentTemplate.DoesNotExist:
-#         return Response({}, status=status.HTTP_404_NOT_FOUND)
 
 
 class SingleDocumentTemplate(RetrieveUpdateDestroyAPIView):
