@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from users.serializers import UserSerializer
 from groups.serializers import GroupSerializer
-from dp_base_libs.serializers import DPDynamicFieldsModelSerializer
+from dp_base_libs.serializers import DPDynamicFieldsModelSerializer, DPUpdateRelatedSerializerMixin
 from documents.models import DocumentTemplate, DocumentTemplateField, DocumentTemplateStep, Document, DocumentValues
 from django.contrib.auth.models import Group
 
@@ -25,7 +25,8 @@ class DocumentTemplateStepSerializer(DPDynamicFieldsModelSerializer, serializers
         )
 
 
-class DocumentTemplateSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
+class DocumentTemplateSerializer(DPUpdateRelatedSerializerMixin, DPDynamicFieldsModelSerializer,
+                                 serializers.ModelSerializer):
     creators_group_data = GroupSerializer(source='creators_group', read_only=True)
     template_fields = DocumentTemplateFieldSerializer(source='document_template_fields', many=True, read_only=True)
     template_steps = DocumentTemplateStepSerializer(source='document_template_steps', many=True, read_only=True)
@@ -55,21 +56,11 @@ class DocumentTemplateSerializer(DPDynamicFieldsModelSerializer, serializers.Mod
     def update(self, instance, validated_data):
         template_fields = self.context.get('template_fields')
         template_steps = self.context.get('template_steps')
-
         instance = super(DocumentTemplateSerializer, self).update(instance, validated_data)
-
-        for field in template_fields:
-            field['template'] = instance
-            field_obj = DocumentTemplateField(**field)
-            field_obj.save()
-
-        for step_data in template_steps:
-            step_data['template'] = instance
-            step_data['members_group'] = Group.objects.get(id=step_data.get('members_group'))
-            step_data['editors_group'] = Group.objects.get(id=step_data.get('editors_group'))
-            step_data['viewers_group'] = Group.objects.get(id=step_data.get('viewers_group'))
-            step = DocumentTemplateStep(**step_data)
-            step.save()
+        self._update_related(pk_key='id', data=template_fields, model_class=DocumentTemplateField,
+                              serializer_class=DocumentTemplateFieldSerializer, many=True)
+        self._update_related(pk_key='id', data=template_steps, model_class=DocumentTemplateStep,
+                              serializer_class=DocumentTemplateStepSerializer, many=True)
 
         return instance
 
