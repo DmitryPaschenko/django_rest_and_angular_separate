@@ -119,9 +119,19 @@ angular.module('AdminApp').controller('DocumentTemplateCtrl', function ($scope, 
         self.model.template_fields.push(newField);
     };
 
+    self.removeField = function(field) {
+        var removeIndex = self.model.template_fields.indexOf(field);
+        self.model.template_fields.splice(removeIndex, 1);
+    };
+
     self.addStep = function(){
         var newStep = {name: '', members_group: '', editors_group: '', viewers_group: ''};
         self.model.template_steps.push(newStep);
+    };
+
+    self.removeStep = function(step) {
+        var removeIndex = self.model.template_steps.indexOf(step);
+        self.model.template_steps.splice(removeIndex, 1);
     };
 
     self.getObject(id);
@@ -178,9 +188,19 @@ angular.module('AdminApp').controller('DocumentTemplateCreateCtrl', function ($s
         self.model.template_fields.push(newField);
     };
 
+    self.removeField = function(field) {
+        var removeIndex = self.model.template_fields.indexOf(field);
+        self.model.template_fields.splice(removeIndex, 1);
+    };
+
     self.addStep = function(){
         var newStep = {name: '', members_group: '', editors_group: '', viewers_group: ''};
         self.model.template_steps.push(newStep);
+    };
+
+    self.removeStep = function(step) {
+        var removeIndex = self.model.template_steps.indexOf(step);
+        self.model.template_steps.splice(removeIndex, 1);
     };
 });
 

@@ -38,13 +38,16 @@ class DocumentTemplateSerializer(DPUpdateRelatedSerializerMixin, DPDynamicFields
     def __update_related_objects(self, instance):
         template_fields = self.context.get('template_fields')
         template_steps = self.context.get('template_steps')
+
         self._update_related(pk_key='id', data=template_fields, model_class=DocumentTemplateField,
                              serializer_class=DocumentTemplateFieldSerializer, many=True,
-                             base_instance=instance, related_name='template')
+                             base_instance=instance, related_name='template',
+                             old_objects=instance.document_template_fields.all())
 
         self._update_related(pk_key='id', data=template_steps, model_class=DocumentTemplateStep,
                              serializer_class=DocumentTemplateStepSerializer, many=True,
-                             base_instance=instance, related_name='template')
+                             base_instance=instance, related_name='template',
+                             old_objects=instance.document_template_steps.all())
 
     def create(self, validated_data):
         instance = super(DocumentTemplateSerializer, self).create(validated_data)

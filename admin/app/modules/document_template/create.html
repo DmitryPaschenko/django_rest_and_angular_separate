@@ -16,7 +16,6 @@
                     </md-option>
                 </md-select>
             </md-input-container>
-
             <md-card>
                 <md-card-title>
                     <md-card-title-text>
@@ -36,6 +35,11 @@
                                     {{widget.title}}
                                 </md-option>
                             </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <md-button class="md-icon-button md-accent md-input-line-delete" ng-click="ctrl.removeField(template_field)">
+                                <i class="material-icons">clear</i>
+                            </md-button>
                         </md-input-container>
                     </div>
                 </md-card-content>
@@ -78,6 +82,11 @@
                                     {{group.name}}
                                 </md-option>
                             </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <md-button class="md-icon-button md-accent md-input-line-delete" ng-click="ctrl.removeStep(template_step)">
+                                <i class="material-icons">clear</i>
+                            </md-button>
                         </md-input-container>
                     </div>
                 </md-card-content>
