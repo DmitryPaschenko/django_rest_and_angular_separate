@@ -35,32 +35,26 @@ class DocumentTemplateSerializer(DPUpdateRelatedSerializerMixin, DPDynamicFields
         model = DocumentTemplate
         fields = ('id', 'name', 'creators_group', 'creators_group_data', 'template_fields', 'template_steps')
 
-    def create(self, validated_data):
+    def __update_related_objects(self, instance):
         template_fields = self.context.get('template_fields')
         template_steps = self.context.get('template_steps')
-        template = DocumentTemplate.objects.create(**validated_data)
+        self._update_related(pk_key='id', data=template_fields, model_class=DocumentTemplateField,
+                             serializer_class=DocumentTemplateFieldSerializer, many=True,
+                             base_instance=instance, related_name='template')
 
-        for field_data in template_fields:
-            field_data['template'] = template
-            DocumentTemplateField.objects.create(**field_data)
+        self._update_related(pk_key='id', data=template_steps, model_class=DocumentTemplateStep,
+                             serializer_class=DocumentTemplateStepSerializer, many=True,
+                             base_instance=instance, related_name='template')
 
-        for step_data in template_steps:
-            step_data['template'] = template
-            step_data['members_group'] = Group.objects.get(id=step_data.get('members_group'))
-            step_data['editors_group'] = Group.objects.get(id=step_data.get('editors_group'))
-            step_data['viewers_group'] = Group.objects.get(id=step_data.get('viewers_group'))
-            DocumentTemplateStep.objects.create(**step_data)
+    def create(self, validated_data):
+        instance = super(DocumentTemplateSerializer, self).create(validated_data)
+        self.__update_related_objects(instance)
 
-        return template
+        return instance
 
     def update(self, instance, validated_data):
-        template_fields = self.context.get('template_fields')
-        template_steps = self.context.get('template_steps')
         instance = super(DocumentTemplateSerializer, self).update(instance, validated_data)
-        self._update_related(pk_key='id', data=template_fields, model_class=DocumentTemplateField,
-                              serializer_class=DocumentTemplateFieldSerializer, many=True)
-        self._update_related(pk_key='id', data=template_steps, model_class=DocumentTemplateStep,
-                              serializer_class=DocumentTemplateStepSerializer, many=True)
+        self.__update_related_objects(instance)
 
         return instance
 

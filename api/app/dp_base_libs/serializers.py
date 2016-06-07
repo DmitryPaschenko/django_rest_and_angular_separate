@@ -22,23 +22,29 @@ class DPDynamicFieldsModelSerializer(serializers.ModelSerializer):
 
 class DPUpdateRelatedSerializerMixin(object):
 
-    def __update_single_related(self, pk_key, model_class, serializer_class, data):
-        print data
+    def __update_single_related(self, pk_key, model_class, serializer_class, data, base_instance, related_name):
         pk = data.get(pk_key, None)
-        print pk
         if pk is None:
-            raise ValueError('Object does not have pk_key')
+            # add new related object
+            data[related_name] = base_instance.pk
+            serializer = serializer_class(data=data)
+        else:
+            # edit related object
+            obj = model_class.objects.get(pk=int(pk))
+            serializer = serializer_class(obj, data=data)
 
-        obj = model_class.objects.get(pk=int(pk))
-        serializer = serializer_class(obj, data=data)
         if serializer.is_valid():
             serializer.save()
         else:
             raise ValueError('Related object save error')
 
-    def _update_related(self, pk_key, data, model_class, serializer_class, many=False):
+    def __delete_related(self, pk_key, model_class, serializer_class, data, base_instance, related_name):
+        pass
+
+    def _update_related(self, pk_key, data, model_class, serializer_class, base_instance, related_name, many=False):
         if many:
             for single_data in data:
-                self.__update_single_related(pk_key, model_class, serializer_class, single_data)
+                self.__update_single_related(pk_key, model_class, serializer_class, single_data,
+                                             base_instance, related_name)
         else:
-            self.__update_single_related(pk_key, model_class, serializer_class, data)
+            self.__update_single_related(pk_key, model_class, serializer_class, data, base_instance, related_name)

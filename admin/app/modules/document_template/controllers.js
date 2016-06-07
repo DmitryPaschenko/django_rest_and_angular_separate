@@ -114,6 +114,16 @@ angular.module('AdminApp').controller('DocumentTemplateCtrl', function ($scope, 
 
     }
 
+    self.addField = function(){
+        var newField = {name: '', template: ''};
+        self.model.template_fields.push(newField);
+    };
+
+    self.addStep = function(){
+        var newStep = {name: '', members_group: '', editors_group: '', viewers_group: ''};
+        self.model.template_steps.push(newStep);
+    };
+
     self.getObject(id);
 });
 
