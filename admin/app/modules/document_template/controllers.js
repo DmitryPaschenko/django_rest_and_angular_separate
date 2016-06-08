@@ -14,8 +14,8 @@ angular.module('AdminApp').controller('DocumentTemplateListCtrl', function ($sco
     // Change this
     self.query = {
         order: 'name',
-        limit: 10,
-        page: 1
+        limit: 1,
+        page: 8
     };
 
     self.getListData = function () {
