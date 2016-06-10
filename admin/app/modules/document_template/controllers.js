@@ -14,8 +14,8 @@ angular.module('AdminApp').controller('DocumentTemplateListCtrl', function ($sco
     // Change this
     self.query = {
         order: 'name',
-        limit: 1,
-        page: 8
+        limit: 10,
+        page: 1
     };
 
     self.getListData = function () {
@@ -115,23 +115,23 @@ angular.module('AdminApp').controller('DocumentTemplateCtrl', function ($scope, 
     }
 
     self.addField = function(){
-        var newField = {name: '', template: ''};
-        self.model.template_fields.push(newField);
+        var newField = {name: '', widget: ''};
+        self.model.document_template_fields.push(newField);
     };
 
     self.removeField = function(field) {
-        var removeIndex = self.model.template_fields.indexOf(field);
-        self.model.template_fields.splice(removeIndex, 1);
+        var removeIndex = self.model.document_template_fields.indexOf(field);
+        self.model.document_template_fields.splice(removeIndex, 1);
     };
 
     self.addStep = function(){
         var newStep = {name: '', members_group: '', editors_group: '', viewers_group: ''};
-        self.model.template_steps.push(newStep);
+        self.model.document_template_steps.push(newStep);
     };
 
     self.removeStep = function(step) {
-        var removeIndex = self.model.template_steps.indexOf(step);
-        self.model.template_steps.splice(removeIndex, 1);
+        var removeIndex = self.model.document_template_steps.indexOf(step);
+        self.model.document_template_steps.splice(removeIndex, 1);
     };
 
     self.getObject(id);
@@ -144,9 +144,8 @@ angular.module('AdminApp').controller('DocumentTemplateCreateCtrl', function ($s
 
     self.model = {
         'name': '',
-
-        'template_fields': [{name: '', widget: ''}],
-        'template_steps': [{name: '', members_group: '', editors_group: '', viewers_group: ''}]
+        'document_template_fields': [{name: '', widget: ''}],
+        'document_template_steps': [{name: '', members_group: '', editors_group: '', viewers_group: ''}]
     };
 
     self.field_widgets = getTemplateWidgets();
@@ -184,23 +183,23 @@ angular.module('AdminApp').controller('DocumentTemplateCreateCtrl', function ($s
     };
 
     self.addField = function(){
-        var newField = {name: '', template: ''};
-        self.model.template_fields.push(newField);
+        var newField = {name: '', widget: ''};
+        self.model.document_template_fields.push(newField);
     };
 
     self.removeField = function(field) {
-        var removeIndex = self.model.template_fields.indexOf(field);
-        self.model.template_fields.splice(removeIndex, 1);
+        var removeIndex = self.model.document_template_fields.indexOf(field);
+        self.model.document_template_fields.splice(removeIndex, 1);
     };
 
     self.addStep = function(){
         var newStep = {name: '', members_group: '', editors_group: '', viewers_group: ''};
-        self.model.template_steps.push(newStep);
+        self.model.document_template_steps.push(newStep);
     };
 
     self.removeStep = function(step) {
-        var removeIndex = self.model.template_steps.indexOf(step);
-        self.model.template_steps.splice(removeIndex, 1);
+        var removeIndex = self.model.document_template_steps.indexOf(step);
+        self.model.document_template_steps.splice(removeIndex, 1);
     };
 });
 

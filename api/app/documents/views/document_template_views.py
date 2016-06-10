@@ -20,12 +20,7 @@ class DocumentTemplateList(ListCreateAPIView):
 
     def post(self, request):
         try:
-            data = request.data
-            template_fields = data.pop('template_fields')
-            template_steps = data.pop('template_steps')
-            serializer = self.get_serializer_class()(data=request.data, context={
-                'request': request, 'template_fields': template_fields, 'template_steps': template_steps}
-            )
+            serializer = self.get_serializer_class()(data=request.data, context={'request': request})
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -54,12 +49,7 @@ class SingleDocumentTemplate(RetrieveUpdateDestroyAPIView):
     def put(self, request, pk):
         try:
             obj = self.get_queryset().get(pk=int(pk))
-            data = request.data
-            template_fields = data.pop('template_fields')
-            template_steps = data.pop('template_steps')
-            serializer = self.get_serializer_class()(obj, data=request.data, context={
-                'request': request, 'template_fields': template_fields, 'template_steps': template_steps}
-            )
+            serializer = self.get_serializer_class()(obj, data=request.data, context={'request': request})
 
             if serializer.is_valid():
                 serializer.save()

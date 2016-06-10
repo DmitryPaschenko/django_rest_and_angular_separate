@@ -24,7 +24,7 @@
                     </md-card-title-text>
                 </md-card-title>
                 <md-card-content>
-                    <div layout-gt-sm="row" ng-repeat="template_field in ctrl.model.template_fields">
+                    <div layout-gt-sm="row" ng-repeat="template_field in ctrl.model.document_template_fields">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Name</label>
                             <input ng-model="template_field.name">
@@ -55,7 +55,7 @@
                     </md-card-title-text>
                 </md-card-title>
                 <md-card-content>
-                    <div layout-gt-sm="row" ng-repeat="template_step in ctrl.model.template_steps">
+                    <div layout-gt-sm="row" ng-repeat="template_step in ctrl.model.document_template_steps">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Name</label>
                             <input ng-model="template_step.name">
