@@ -26,10 +26,14 @@
                     </md-card-title-text>
                 </md-card-title>
                 <md-card-content>
-                    <div layout-gt-sm="row" ng-repeat="template_field in ctrl.model.document_template_fields">
+                    <div layout-gt-sm="row" ng-repeat="(template_field_index, template_field) in ctrl.model.document_template_fields">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Name</label>
                             <input ng-model="template_field.name">
+                            <div ng-message="required"
+                                 ng-repeat="message in ctrl.errors.document_template_fields[template_field_index].name">
+                                {{ message }}
+                            </div>
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Widget</label>
@@ -38,6 +42,10 @@
                                     {{widget.title}}
                                 </md-option>
                             </md-select>
+                            <div ng-message="required"
+                                 ng-repeat="message in ctrl.errors.document_template_fields[template_field_index].widget">
+                                {{ message }}
+                            </div>
                         </md-input-container>
                         <md-input-container class="md-block">
                             <md-button class="md-icon-button md-accent md-input-line-delete" ng-click="ctrl.removeField(template_field)">
@@ -57,10 +65,14 @@
                     </md-card-title-text>
                 </md-card-title>
                 <md-card-content>
-                    <div layout-gt-sm="row" ng-repeat="template_step in ctrl.model.document_template_steps">
+                    <div layout-gt-sm="row" ng-repeat="(template_step_index, template_step) in ctrl.model.document_template_steps">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Name</label>
                             <input ng-model="template_step.name">
+                            <div ng-message="required"
+                                 ng-repeat="message in ctrl.errors.document_template_steps[template_step_index].name">
+                                {{ message }}
+                            </div>
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Members group</label>
@@ -69,6 +81,10 @@
                                     {{group.name}}
                                 </md-option>
                             </md-select>
+                            <div ng-message="required"
+                                 ng-repeat="message in ctrl.errors.document_template_steps[template_step_index].members_group">
+                                {{ message }}
+                            </div>
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Members group</label>
@@ -77,6 +93,10 @@
                                     {{group.name}}
                                 </md-option>
                             </md-select>
+                            <div ng-message="required"
+                                 ng-repeat="message in ctrl.errors.document_template_steps[template_step_index].editors_group">
+                                {{ message }}
+                            </div>
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Members group</label>
@@ -85,6 +105,10 @@
                                     {{group.name}}
                                 </md-option>
                             </md-select>
+                            <div ng-message="required"
+                                 ng-repeat="message in ctrl.errors.document_template_steps[template_step_index].viewers_group">
+                                {{ message }}
+                            </div>
                         </md-input-container>
                         <md-input-container class="md-block">
                             <md-button class="md-icon-button md-accent md-input-line-delete" ng-click="ctrl.removeStep(template_step)">

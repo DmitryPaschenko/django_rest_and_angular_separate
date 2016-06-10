@@ -107,8 +107,15 @@ angular.module('AdminApp').controller('DocumentTemplateCtrl', function ($scope, 
         }
 
         function onError(response) {
-            var errorText = response.data.detail === undefined ? 'Save template data error.' : response.data.detail;
+            var errorText = 'Save template data error.';
+            if (response.data.detail !== undefined) {
+                if (typeof response.data.detail === 'string')
+                    errorText = response.data.detail;
+
+                self.errors = response.data.detail;
+            }
             $scope.addDangerAlert('Danger! ' + errorText);
+
         }
         documentTemplateService.saveTemplate(id, model).$promise.then(onSuccess, onError);
 
