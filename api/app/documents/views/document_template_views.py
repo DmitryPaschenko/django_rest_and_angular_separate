@@ -6,6 +6,7 @@ from dp_base_libs.paginations import DPAngularTablePagination
 from documents.models import DocumentTemplate, DocumentTemplateField
 from documents.serializers import DocumentTemplateSerializer, DocumentTemplateFieldSerializer, DocumentTemplateStepSerializer
 from documents.filters import DocumentTemplateFilter, DocumentTemplateFieldFilter
+from dp_base_libs.decorators import exception_to_response
 
 
 class DocumentTemplateList(ListCreateAPIView):
@@ -18,6 +19,7 @@ class DocumentTemplateList(ListCreateAPIView):
         'name'
     )
 
+    @exception_to_response(Exception, status.HTTP_400_BAD_REQUEST)
     def post(self, request):
         try:
             serializer = self.get_serializer_class()(data=request.data, context={'request': request})
@@ -25,7 +27,7 @@ class DocumentTemplateList(ListCreateAPIView):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+                raise ValueError(serializer.errors)
         except DocumentTemplate.DoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
@@ -46,6 +48,7 @@ class SingleDocumentTemplate(RetrieveUpdateDestroyAPIView):
         except DocumentTemplate.DoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
+    @exception_to_response(Exception, status.HTTP_400_BAD_REQUEST)
     def put(self, request, pk):
         try:
             obj = self.get_queryset().get(pk=int(pk))
@@ -55,12 +58,9 @@ class SingleDocumentTemplate(RetrieveUpdateDestroyAPIView):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+                raise ValueError(serializer.errors)
         except DocumentTemplate.DoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
-
-
-
 
 
 class DocumentTemplateFieldList(ListCreateAPIView):
