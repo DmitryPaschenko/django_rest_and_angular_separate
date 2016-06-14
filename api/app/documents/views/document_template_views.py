@@ -19,7 +19,6 @@ class DocumentTemplateList(ListCreateAPIView):
         'name'
     )
 
-    @exception_to_response(Exception, status.HTTP_400_BAD_REQUEST)
     def post(self, request):
         try:
             serializer = self.get_serializer_class()(data=request.data, context={'request': request})
@@ -48,7 +47,6 @@ class SingleDocumentTemplate(RetrieveUpdateDestroyAPIView):
         except DocumentTemplate.DoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
-    @exception_to_response(Exception, status.HTTP_400_BAD_REQUEST)
     def put(self, request, pk):
         try:
             obj = self.get_queryset().get(pk=int(pk))

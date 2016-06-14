@@ -17,14 +17,28 @@ class DocumentTemplateFieldSerializer(DPDynamicFieldsModelSerializer, serializer
 class DocumentTemplateStepSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
     template = serializers.PrimaryKeyRelatedField(queryset=DocumentTemplate.objects.all(), required=False)
     members_group_data = GroupSerializer(source='members_group', read_only=True)
-    editors_group_data = GroupSerializer(source='editors_group', read_only=True)
-    viewers_group_data = GroupSerializer(source='viewers_group', read_only=True)
+
+    editable_fields = DocumentTemplateFieldSerializer(many=True, read_only=True)
+    readonly_fields = DocumentTemplateFieldSerializer(many=True, read_only=True)
+
+    editable_fields_names = serializers.SlugRelatedField(
+        source='editable_fields',
+        many=True,
+        read_only=True,
+        slug_field='name'
+    )
+    readonly_fields_names = serializers.SlugRelatedField(
+        source='readonly_fields',
+        many=True,
+        read_only=True,
+        slug_field='name'
+    )
 
     class Meta:
         model = DocumentTemplateStep
         fields = (
-            'id', 'name', 'step_number', 'members_group', 'editors_group', 'viewers_group', 'members_group_data',
-            'editors_group_data', 'viewers_group_data', 'template'
+            'id', 'name', 'step_number', 'members_group', 'members_group_data', 'template',
+            'editable_fields', 'readonly_fields', 'editable_fields_names', 'readonly_fields_names'
         )
 
 
@@ -53,54 +67,10 @@ class DocumentTemplateSerializer(DPUpdateRelatedSerializerMixin, DPDynamicFields
                              old_objects=instance.document_template_steps.all())
 
     def create(self, validated_data):
-        validated_data.pop('document_template_fields')
-        validated_data.pop('document_template_steps')
-
-        ModelClass = self.Meta.model
-        info = model_meta.get_field_info(ModelClass)
-        many_to_many = {}
-        for field_name, relation_info in info.relations.items():
-            if relation_info.to_many and (field_name in validated_data):
-                many_to_many[field_name] = validated_data.pop(field_name)
-
-        try:
-            instance = ModelClass.objects.create(**validated_data)
-        except TypeError as exc:
-            msg = (
-                'Got a `TypeError` when calling `%s.objects.create()`. '
-                'This may be because you have a writable field on the '
-                'serializer class that is not a valid argument to '
-                '`%s.objects.create()`. You may need to make the field '
-                'read-only, or override the %s.create() method to handle '
-                'this correctly.\nOriginal exception text was: %s.' %
-                (
-                    ModelClass.__name__,
-                    ModelClass.__name__,
-                    self.__class__.__name__,
-                    exc
-                )
-            )
-            raise TypeError(msg)
-
-        # Save many-to-many relationships after the instance is created.
-        if many_to_many:
-            for field_name, value in many_to_many.items():
-                setattr(instance, field_name, value)
-
-        related_data = {
-            'document_template_fields': self.initial_data.get('document_template_fields'),
-            'document_template_steps': self.initial_data.get('document_template_steps')
-        }
-        self.__update_related_objects(instance, related_data)
-
-        return instance
+        instance = DocumentTemplate()
+        return self.update(instance, validated_data)
 
     def update(self, instance, validated_data):
-        related_data = {
-            'document_template_fields': self.initial_data.get('document_template_fields'),
-            'document_template_steps': self.initial_data.get('document_template_steps')
-        }
-
         validated_data.pop('document_template_fields')
         validated_data.pop('document_template_steps')
 
@@ -108,7 +78,47 @@ class DocumentTemplateSerializer(DPUpdateRelatedSerializerMixin, DPDynamicFields
             setattr(instance, attr, value)
         instance.save()
 
-        self.__update_related_objects(instance, related_data)
+        # Remove all related fields
+        instance.document_template_fields.all().delete()
+        instance.document_template_steps.all().delete()
+
+        # Create New Related Fields
+        fields = self.initial_data.get('document_template_fields')
+        steps = self.initial_data.get('document_template_steps')
+
+        field_associated = {}
+        for field in fields:
+            associated_key = field.get('name')
+            field['template'] = instance
+            new_field = DocumentTemplateField(**field)
+            new_field.save()
+            associated_value = new_field
+            field_associated.update({associated_key: associated_value})
+
+        for step in steps:
+            editable_fields_names = step.pop('editable_fields_names', None)
+            readonly_fields_names = step.pop('readonly_fields_names', None)
+
+            new_step_data = {
+                'template': instance,
+                'step_number':  step.get('step_number'),
+                'name': step.get('name'),
+                'members_group': Group.objects.get(pk=step.get('members_group')),
+            }
+            new_step = DocumentTemplateStep(**new_step_data)
+            new_step.save()
+
+            for editable_field in editable_fields_names:
+                field = field_associated.get(editable_field);
+                if field:
+                    new_step.editable_fields.add(field)
+
+            for readonly_field in readonly_fields_names:
+                field = field_associated.get(readonly_field);
+                if field:
+                    new_step.readonly_fields.add(field)
+
+
 
         return instance
 

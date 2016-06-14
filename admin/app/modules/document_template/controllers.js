@@ -132,13 +132,30 @@ angular.module('AdminApp').controller('DocumentTemplateCtrl', function ($scope, 
     };
 
     self.addStep = function(){
-        var newStep = {name: '', members_group: '', editors_group: '', viewers_group: ''};
+        var newStep = {name: '', step_number: self.model.document_template_steps.length, members_group: '',
+            editable_fields: [], readonly_fields: [], editable_fields_names: [], readonly_fields_names: []};
         self.model.document_template_steps.push(newStep);
     };
 
     self.removeStep = function(step) {
         var removeIndex = self.model.document_template_steps.indexOf(step);
         self.model.document_template_steps.splice(removeIndex, 1);
+    };
+
+    self.changeFieldName = function (new_value, old_value) {
+        $.each(self.model.document_template_steps, function (step_key, step) {
+            $.each(step.editable_fields_names, function (name_key, name) {
+                if (name === old_value) {
+                    self.model.document_template_steps[step_key].editable_fields_names[name_key] = new_value;
+                }
+            });
+
+            $.each(step.readonly_fields_names, function (name_key, name) {
+                if (name === old_value) {
+                    self.model.document_template_steps[step_key].readonly_fields_names[name_key] = new_value;
+                }
+            });
+        });
     };
 
     self.getObject(id);
@@ -152,7 +169,7 @@ angular.module('AdminApp').controller('DocumentTemplateCreateCtrl', function ($s
     self.model = {
         'name': '',
         'document_template_fields': [{name: '', widget: ''}],
-        'document_template_steps': [{name: '', members_group: '', editors_group: '', viewers_group: ''}]
+        'document_template_steps': [{name: '', members_group: '', editable_fields: [], readonly_fields: [], step_number: 0, editable_fields_names: [], readonly_fields_names: []}]
     };
 
     self.field_widgets = getTemplateWidgets();
@@ -200,13 +217,29 @@ angular.module('AdminApp').controller('DocumentTemplateCreateCtrl', function ($s
     };
 
     self.addStep = function(){
-        var newStep = {name: '', members_group: '', editors_group: '', viewers_group: ''};
+        var newStep = {name: '', members_group: '', editable_fields: [], readonly_fields: [], step_number: self.model.document_template_steps.length, editable_fields_names: [], readonly_fields_names: []};
         self.model.document_template_steps.push(newStep);
     };
 
     self.removeStep = function(step) {
         var removeIndex = self.model.document_template_steps.indexOf(step);
         self.model.document_template_steps.splice(removeIndex, 1);
+    };
+
+    self.changeFieldName = function (new_value, old_value) {
+        $.each(self.model.document_template_steps, function (step_key, step) {
+            $.each(step.editable_fields_names, function (name_key, name) {
+                if (name === old_value) {
+                    self.model.document_template_steps[step_key].editable_fields_names[name_key] = new_value;
+                }
+            });
+
+            $.each(step.readonly_fields_names, function (name_key, name) {
+                if (name === old_value) {
+                    self.model.document_template_steps[step_key].readonly_fields_names[name_key] = new_value;
+                }
+            });
+        });
     };
 });
 

@@ -36,11 +36,11 @@ class DocumentTemplateStep(DPAbstractModel, DPAbstractSignable, DPAbstractTimest
     step_number = models.SmallIntegerField(null=False, blank=False, default=0)
     name = models.CharField(max_length=255, null=False, blank=False)
     members_group = models.ForeignKey(Group, blank=False, related_name='members_group')
-    editors_group = models.ForeignKey(Group, blank=False, related_name='editors_group')
-    viewers_group = models.ForeignKey(Group, blank=False, related_name='viewers_group')
+    editable_fields = models.ManyToManyField(DocumentTemplateField, blank=True, related_name='editable_fields')
+    readonly_fields = models.ManyToManyField(DocumentTemplateField, blank=True, related_name='readonly_fields')
 
     class Meta:
-        ordering = ['name']
+        ordering = ['pk']
 
 
 class Document(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
