@@ -63,6 +63,12 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state, $mdM
       srefOpts: {},
       title: 'Document Templates',
       icon: 'templates'
+    },
+    {
+      sref: 'admin.documents.list',
+      srefOpts: {},
+      title: 'Documents',
+      icon: 'documents'
     }
 //    {
 //      link : '',

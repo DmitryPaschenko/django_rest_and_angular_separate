@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
-from documents.urls import template_urls as document_template_url, template_field_urls
+from documents.urls import template_urls as document_template_url, template_field_urls, document_urls
 from groups import urls as groups_api_url
 from permissions import contenttypes_urls as contenttypes_api_urls
 from permissions import permissions_urls as permissions_api_urls
@@ -16,6 +16,8 @@ api_urls = [
 
     url(r'^templates/', include(document_template_url, namespace="document_templates")),
     url(r'^template-fields/', include(template_field_urls, namespace="document_template_fields")),
+
+    url(r'^documents/', include(document_urls, namespace="documents")),
 ]
 
 urlpatterns = [

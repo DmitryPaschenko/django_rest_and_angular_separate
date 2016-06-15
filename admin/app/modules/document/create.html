@@ -1,0 +1,21 @@
+<div ng-controller="DocumentCreateCtrl as ctrl">
+    <form name="addDocumentForm" ng-submit="ctrl.addObject(addDocumentForm, ctrl.model)">
+        <md-input-container class="md-block">
+            <label>Document name</label>
+            <input ng-model="ctrl.model.name">
+            <div ng-messages="ctrl.errors.name">
+                <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="md-block" ng-repeat="document_value in ctrl.model.document_values">
+            <label>{{ field.name }}</label>
+            <input ng-model="document_value.value" required>
+
+            <div ng-messages="ctrl.errors.name">
+                <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>
+            </div>
+        </md-input-container>
+        <md-button class="md-raised md-primary" type="submit">Save</md-button>
+    </form>
+</div>

@@ -118,18 +118,64 @@ class DocumentTemplateSerializer(DPUpdateRelatedSerializerMixin, DPDynamicFields
                 if field:
                     new_step.readonly_fields.add(field)
 
-
-
         return instance
 
 
-class DocumentSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
-    class Meta:
-        model = Document
-        fields = ('id', 'name', 'status', 'step')
-
-
 class DocumentValuesSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
+    field = DocumentTemplateFieldSerializer(read_only=True)
+
     class Meta:
         model = DocumentValues
         fields = ('id', 'document', 'field', 'value')
+
+
+class DocumentSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
+    template = DocumentTemplateSerializer(read_only=True)
+    document_values = DocumentValuesSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Document
+        fields = ('id', 'name', 'template', 'document_values')
+
+    def create(self, validated_data):
+        instance = Document()
+        return self.update(instance, validated_data)
+
+    def update(self, instance, validated_data):
+
+        is_new = False
+        instance.name = validated_data.get('name')
+
+        if instance.pk is None:
+            is_new = True
+            template_id = self.initial_data.get('template', None)
+
+            template = DocumentTemplate.objects.get(pk=template_id)
+            if template_id is None or template is None:
+                raise ValueError('Template value is required')
+
+            instance.template_id = template_id
+            instance.step = instance.get_first_step()
+
+        instance.save()
+
+        if is_new:
+            # Create and fill all template fields by default when create new document
+            all_fields = DocumentTemplateField.objects.filter(template_id=instance.template_id)
+            for field in all_fields:
+                dv = DocumentValues(field_id=int(field.id))
+                instance.document_values.add(dv)
+
+        document_values = self.initial_data.get('document_values', None)
+        if document_values:
+            for document_value in document_values:
+                field = document_value.get('field')
+                field_id = field.get('id')
+                if is_new:
+                    f, created = DocumentValues.objects.get_or_create(document_id=instance.pk, field_id=int(field_id))
+                else:
+                    f = DocumentValues.objects.get(pk=document_value.get('id'))
+                f.value = document_value.get('value')
+                f.save()
+
+        return instance

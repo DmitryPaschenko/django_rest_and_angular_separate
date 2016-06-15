@@ -235,6 +235,49 @@ function($httpProvider, $resourceProvider, $mdThemingProvider) {
         })
 
 
+        .state('admin.documents', {
+            abstract: true,
+            data: {
+                proxy: 'admin.documents.list'
+            },
+        })
+        .state("admin.documents.edit", {
+            url: "/documents/{id:[0-9]+}",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/document/edit.html',
+                }
+            },
+            data: { displayName: 'Edit documents' }
+        })
+        .state("admin.documents.add", {
+            url: "/documents/{template_id:[0-9]+}/add",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/document/create.html',
+                }
+            },
+            data: { displayName: 'Add document' }
+        })
+//        .state("admin.documents.create", {
+//            url: "/documents/create",
+//            views: {
+//                'content': {
+//                    templateUrl: '/app/modules/document/create.html',
+//                }
+//            },
+//            data: { displayName: 'Create documents' }
+//        })
+        .state("admin.documents.list", {
+            url: "/documents",
+            views: {
+                'content': {
+                    templateUrl: '/app/modules/document/list.html',
+                }
+            },
+            data: { displayName: 'Document list' }
+        })
+
         .state("pages.login", {
             url: "/login",
             views: {

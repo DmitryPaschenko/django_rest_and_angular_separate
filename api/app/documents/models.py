@@ -40,7 +40,7 @@ class DocumentTemplateStep(DPAbstractModel, DPAbstractSignable, DPAbstractTimest
     readonly_fields = models.ManyToManyField(DocumentTemplateField, blank=True, related_name='readonly_fields')
 
     class Meta:
-        ordering = ['pk']
+        ordering = ['step_number']
 
 
 class Document(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
@@ -57,6 +57,7 @@ class Document(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
         (STATUS_PAID, 'Paid')
     )
 
+    template = models.ForeignKey(DocumentTemplate, blank=False, related_name='document_templates')
     name = models.CharField(max_length=255, null=False, blank=False)
     status = models.CharField(max_length=50, choices=STATUSES, default=STATUS_NEW, help_text='document status')
     step = models.ForeignKey(DocumentTemplateStep, null=False, blank=False, related_name='document_step')
@@ -64,9 +65,13 @@ class Document(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
     class Meta:
         ordering = ['name']
 
+    def get_first_step(self):
+        step = DocumentTemplateStep.objects.filter(template_id=self.template.pk).order_by('step_number')[0]
+        return step
+
 
 class DocumentValues(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
-    document = models.ForeignKey(Document, null=False, blank=False, related_name='document')
+    document = models.ForeignKey(Document, null=False, blank=False, related_name='document_values')
     field = models.ForeignKey(DocumentTemplateField, null=False, blank=False, related_name='document_field')
     value = models.TextField(blank=True, null=True, default='')
 
