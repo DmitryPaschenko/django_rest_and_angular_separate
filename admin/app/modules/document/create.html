@@ -9,8 +9,8 @@
         </md-input-container>
 
         <md-input-container class="md-block" ng-repeat="document_value in ctrl.model.document_values">
-            <label>{{ field.name }}</label>
-            <input ng-model="document_value.value" required>
+            <label>{{ document_value.name }}</label>
+            <input ng-model="document_value.value" required >
 
             <div ng-messages="ctrl.errors.name">
                 <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>

@@ -128,6 +128,23 @@ angular.module('AdminApp').controller('DocumentCtrl', function ($scope, $statePa
         documentService.saveDocument(id, model).$promise.then(onSuccess, onError);
     }
 
+    self.approve = function () {
+        // Change this
+        self.promise = documentService.setNextStep(id).$promise;
+
+        function onSuccess(response) {
+            $scope.addSuccessAlert('User data saved!')
+            $state.go('admin.documents.list');
+        }
+
+        function onError(response) {
+            var errorText = response.detail === undefined ? 'Get document data error.' : response.detail;
+            $scope.addDangerAlert('Danger! ' + errorText);
+        }
+
+        self.promise.then(onSuccess, onError);
+    };
+
     self.getObject(id);
 });
 
@@ -173,7 +190,7 @@ angular.module('AdminApp').controller('DocumentCreateCtrl', function ($scope, $s
                     },
                     name: field.name,
                     widget: field.widget,
-                    value: 'dd'
+                    value: ''
                 };
             });
         }

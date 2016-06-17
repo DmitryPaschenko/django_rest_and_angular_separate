@@ -69,6 +69,22 @@ class Document(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
         step = DocumentTemplateStep.objects.filter(template_id=self.template.pk).order_by('step_number')[0]
         return step
 
+    def get_current_step(self):
+        return self.step
+
+    def next_step(self, user):
+        user_groups = [group.id for group in user.groups.all()]
+        if self.step.members_group.pk in user_groups:
+            next_steps = DocumentTemplateStep.objects.filter(template=self.template.pk, step_number__gt=self.step.step_number).order_by('step_number')
+            if next_steps is not None and len(next_steps) > 0:
+                self.step = next_steps[0]
+                self.save()
+                return True
+            else:
+                return False
+        else:
+            raise ValueError('You have not permission for this action')
+
 
 class DocumentValues(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
     document = models.ForeignKey(Document, null=False, blank=False, related_name='document_values')

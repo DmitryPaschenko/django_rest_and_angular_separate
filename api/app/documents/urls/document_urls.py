@@ -7,4 +7,6 @@ urlpatterns = [
         name='document_template_list'),
     url('^(?P<pk>\d+)/$', document_views.SingleDocument.as_view(),
         name='single_document'),
+    url('^(?P<pk>\d+)/next-step$', document_views.next_step,
+        name='document_next_step'),
 ]

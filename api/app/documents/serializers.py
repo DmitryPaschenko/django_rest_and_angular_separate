@@ -131,7 +131,23 @@ class DocumentValuesSerializer(DPDynamicFieldsModelSerializer, serializers.Model
 
 class DocumentSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
     template = DocumentTemplateSerializer(read_only=True)
-    document_values = DocumentValuesSerializer(read_only=True, many=True)
+    document_values = serializers.SerializerMethodField()
+
+    def get_document_values(self, obj):
+        user = self.context.get('request').user
+        user_groups = [group.id for group in user.groups.all()]
+
+        step = obj.get_current_step()
+
+        if step and step.members_group.id in user_groups:
+            read_only_fields_ids = [f.pk for f in step.readonly_fields.all()]
+            editable_fields_ids = [f.pk for f in step.editable_fields.all()]
+            queryset = DocumentValues.objects.filter(document=obj.id, field__in=read_only_fields_ids + editable_fields_ids)
+        else:
+            queryset = DocumentValues.objects.filter(pk__lte=0)
+
+        serializer = DocumentValuesSerializer(instance=queryset, read_only=True, many=True)
+        return serializer.data
 
     class Meta:
         model = Document

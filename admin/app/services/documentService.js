@@ -1,11 +1,12 @@
 'use strict';
 
-angular.module('AdminApp').factory('documentService', function($resource, $cookies, $q) {
+angular.module('AdminApp').factory('documentService', function($resource, $cookies, $q, $http) {
     return {
         'getDocumentResource': function () {
-            return $resource(API_URL + "/documents/:id/", null, {
+            return $resource(API_URL + "/documents/:id/:action", {id: '@id', action: '@action'}, {
                 'get': { method:'GET' },
                 'save': { method:'POST' },
+                'post': { method:'POST' },
                 'update': { method:'PUT' },
                 'remove': {method: 'DELETE'}
             });
@@ -39,6 +40,10 @@ angular.module('AdminApp').factory('documentService', function($resource, $cooki
             });
 
             return $q.all(promises);
-        }
+        },
+
+        'setNextStep': function (id) {
+            return this.getDocumentResource().post({id: id, action: 'next-step'});
+        },
     }
 });
