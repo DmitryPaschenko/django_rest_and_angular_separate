@@ -100,11 +100,9 @@ class DocumentTemplateFieldList(ListCreateAPIView):
 
         if available_steps and len(available_steps) > 0:
             first_step = available_steps[0];
-
-            read_only_fields_ids = [f.pk for f in first_step.readonly_fields.all()]
             editable_fields_ids = [f.pk for f in first_step.editable_fields.all()]
 
-            return DocumentTemplateField.objects.filter(pk__in=read_only_fields_ids + editable_fields_ids)
+            return DocumentTemplateField.objects.filter(pk__in=editable_fields_ids)
         else:
             return DocumentTemplateField.objects.filter(pk__lte=0)
 

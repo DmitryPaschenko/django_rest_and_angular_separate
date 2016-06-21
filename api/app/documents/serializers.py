@@ -123,10 +123,14 @@ class DocumentTemplateSerializer(DPUpdateRelatedSerializerMixin, DPDynamicFields
 
 class DocumentValuesSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
     field = DocumentTemplateFieldSerializer(read_only=True)
+    can_edit = serializers.SerializerMethodField()
+
+    def get_can_edit(self, obj):
+        return obj.can_edit()
 
     class Meta:
         model = DocumentValues
-        fields = ('id', 'document', 'field', 'value')
+        fields = ('id', 'document', 'field', 'value', 'can_edit')
 
 
 class DocumentSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):

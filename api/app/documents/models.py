@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from dp_base_libs.models import DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable
 from django.contrib.auth.models import Group
+from cuser.middleware import CuserMiddleware
 
 
 class DocumentTemplate(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
@@ -89,6 +90,32 @@ class Document(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
 class DocumentValues(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
     document = models.ForeignKey(Document, null=False, blank=False, related_name='document_values')
     field = models.ForeignKey(DocumentTemplateField, null=False, blank=False, related_name='document_field')
-    value = models.TextField(blank=True, null=True, default='')
+    _value = models.TextField(blank=True, null=True, default='', db_column="value")
 
+    @property
+    def value(self):
+        return self._value
 
+    @value.setter
+    def value(self, value):
+        user = CuserMiddleware.get_user()
+        user_groups = [group.id for group in user.groups.all()]
+        step = self.document.get_current_step()
+        if step and step.members_group.id in user_groups:
+            for f in step.editable_fields.all():
+                if self.field.pk == f.pk:
+                    self._value = value
+                    break
+
+    def can_edit(self):
+        can = False
+        user = CuserMiddleware.get_user()
+        user_groups = [group.id for group in user.groups.all()]
+        step = self.document.get_current_step()
+        if step and step.members_group.id in user_groups:
+            for f in step.editable_fields.all():
+                if self.field.pk == f.pk:
+                    can = True
+                    break
+
+        return can

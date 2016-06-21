@@ -1,22 +1,26 @@
 <div ng-controller="DocumentCtrl as ctrl">
     <form name="documentForm" ng-submit="ctrl.updateObject(documentForm, ctrl.model)">
-        <md-input-container class="md-block">
-            <label>Document name</label>
-            <input ng-model="ctrl.model.name">
-            <div ng-messages="ctrl.errors.name">
-                <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>
-            </div>
-        </md-input-container>
-
-        <md-input-container class="md-block" ng-repeat="document_value in ctrl.model.document_values">
-            <label>{{ document_value.field.name }}</label>
-            <input ng-model="document_value.value" required>
-            <!--<textarea ng-model="ctrl.model.field_value[field.id].value" required></textarea>-->
-
-            <div ng-messages="ctrl.errors.name">
-                <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>
-            </div>
-        </md-input-container>
+        <md-card>
+            <md-input-container class="md-block">
+                <div><b>Document name</b></div>
+                <div>{{ ctrl.model.name }}</div>
+            </md-input-container>
+        </md-card>
+        <md-card>
+            <md-input-container class="md-block" ng-repeat="document_value in ctrl.model.document_values | orderBy:'-can_edit'">
+                <div ng-show="document_value.can_edit == false">
+                    <div><b>{{ document_value.field.name }}</b></div>
+                    <div>{{ document_value.value }}</div>
+                </div>
+                <div ng-show="document_value.can_edit == true">
+                    <label>{{ document_value.field.name }}</label>
+                    <input ng-model="document_value.value" required>
+                    <div ng-messages="ctrl.errors.name">
+                        <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>
+                    </div>
+                </div>
+            </md-input-container>
+        </md-card>
         <md-button class="md-raised md-primary" type="submit">Save</md-button>
         <md-button class="md-raised md-primary" ng-click="ctrl.approve()">Approve Document</md-button>
     </form>
