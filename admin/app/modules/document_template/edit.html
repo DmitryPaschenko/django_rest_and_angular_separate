@@ -57,7 +57,7 @@
                     </div>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
-                    <md-button ng-click="ctrl.addField()">Add new field</md-button>
+                    <md-button ng-show="ctrl.model.can_edit" ng-click="ctrl.addField()">Add new field</md-button>
                 </md-card-actions>
             </md-card>
             <md-card>
@@ -117,11 +117,12 @@
                     </div>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
-                    <md-button ng-click="ctrl.addStep()">Add new step</md-button>
+                    <md-button ng-show="ctrl.model.can_edit" ng-click="ctrl.addStep()">Add new step</md-button>
                 </md-card-actions>
             </md-card>
             <md-card-actions layout="row" layout-align="end center">
-                <md-button class="md-raised md-primary" type="submit">Save</md-button>
+                <md-button ng-show="ctrl.model.can_edit" class="md-raised md-primary" type="submit">Save</md-button>
+                <div ng-show="!ctrl.model.can_edit">You cant edit this template</div>
             </md-card-actions>
         </form>
     </md-card>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from rest_framework.exceptions import APIException
 from dp_base_libs.models import DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable
 from django.contrib.auth.models import Group
 from cuser.middleware import CuserMiddleware
@@ -13,6 +14,28 @@ class DocumentTemplate(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampa
 
     class Meta:
         ordering = ['name']
+
+    def can_edit(self):
+        can = False
+        if len(self.document_templates.all()) == 0:
+            can = True
+
+        return can
+    
+    def delete(self, using=None):
+        if self.can_edit() == False:
+            raise APIException('Template "' + self.name + '" can not be deleted! Has created documents')
+        
+        return super(DocumentTemplate, self).delete(using)
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if self.can_edit() == False:
+            raise APIException('Template "' + self.name + '" can not be updated! Has created documents')
+        
+        return super(DocumentTemplate, self).save(force_insert, force_update, using, update_fields)
+        
+        
 
 
 class DocumentTemplateField(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
@@ -101,7 +124,7 @@ class Document(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
             else:
                 return False
         else:
-            raise ValueError('You have not permission for this action')
+            raise APIException('You have not permission for this action')
 
     def get_field_value(self, name):
         value = None
@@ -117,7 +140,7 @@ class Document(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
             if v.field.isCalculated():
                 metadata = v.field.getCalculatedMetadata()
                 if len(metadata) < 2:
-                    raise ValueError('Calculated metadata is not valid')
+                    raise APIException('Calculated metadata is not valid')
 
                 method, field = v.field.getCalculatedMetadata()
 
@@ -133,8 +156,6 @@ class Document(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
                         calculated_value = len(value.strip().split(' '))
                         v.set_value_force(calculated_value)
                         v.save()
-
-
 
 
 class DocumentValues(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):

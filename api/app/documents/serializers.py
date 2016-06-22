@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import APIException
 from rest_framework.utils import model_meta
 from users.serializers import UserSerializer
 from groups.serializers import GroupSerializer
@@ -50,7 +51,7 @@ class DocumentTemplateSerializer(DPUpdateRelatedSerializerMixin, DPDynamicFields
 
     class Meta:
         model = DocumentTemplate
-        fields = ('id', 'name', 'creators_group', 'creators_group_data', 'document_template_fields', 'document_template_steps')
+        fields = ('id', 'name', 'creators_group', 'creators_group_data', 'document_template_fields', 'document_template_steps', 'can_edit')
 
     def __update_related_objects(self, instance, data):
         template_fields = data.get('document_template_fields')
@@ -172,7 +173,7 @@ class DocumentSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerial
 
             template = DocumentTemplate.objects.get(pk=template_id)
             if template_id is None or template is None:
-                raise ValueError('Template value is required')
+                raise APIException('Template value is required')
 
             instance.template_id = template_id
             instance.step = instance.get_first_step()

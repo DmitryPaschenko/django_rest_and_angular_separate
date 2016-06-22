@@ -2,6 +2,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import filters
+from rest_framework.exceptions import APIException
 from dp_base_libs.paginations import DPAngularTablePagination
 from documents.models import DocumentTemplate, DocumentTemplateField, DocumentTemplateStep
 from documents.serializers import DocumentTemplateSerializer, DocumentTemplateFieldSerializer, DocumentTemplateStepSerializer
@@ -92,7 +93,7 @@ class DocumentTemplateFieldList(ListCreateAPIView):
         template_id = self.request.parser_context.get('kwargs').get('pk', None)
 
         if template_id is None:
-            raise ValueError('template_id required')
+            raise APIException('template_id required')
 
         user = self.request.user
         user_groups = [group.id for group in user.groups.all()]

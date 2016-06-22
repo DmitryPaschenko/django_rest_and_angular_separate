@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import APIException
 
 
 class DPDynamicFieldsModelSerializer(serializers.ModelSerializer):
@@ -36,7 +37,7 @@ class DPUpdateRelatedSerializerMixin(object):
         if serializer.is_valid():
             serializer.save()
         else:
-            raise ValueError('Related object save error')
+            raise APIException('Related object save error')
 
     def _update_related(self, pk_key, data, old_objects, model_class, serializer_class, base_instance,
                         related_name, many=False):
