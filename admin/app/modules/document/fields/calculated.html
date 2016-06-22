@@ -1,0 +1,7 @@
+<md-input-container class="md-block">
+    <label>{{ document_value.field.name }}</label>
+    <input ng-model="document_value.value" required>
+    <div ng-messages="ctrl.errors.name">
+        <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>
+    </div>
+</md-input-container>

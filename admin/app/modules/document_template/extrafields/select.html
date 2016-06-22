@@ -1,0 +1,8 @@
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Values with delimeter ','? like 'value1,value2,value3'</label>
+    <input ng-model="ctrl.model.document_template_fields[template_field_index].widget_metadata" name="widget_metadata">
+    <div ng-message="required"
+         ng-repeat="message in ctrl.errors.document_template_fields[template_field_index].widget_metadata">
+        {{ message }}
+    </div>
+</md-input-container>

@@ -11,7 +11,7 @@ class DocumentTemplateFieldSerializer(DPDynamicFieldsModelSerializer, serializer
     template = serializers.PrimaryKeyRelatedField(queryset=DocumentTemplate.objects.all(), required=False)
     class Meta:
         model = DocumentTemplateField
-        fields = ('id', 'name', 'template', 'widget')
+        fields = ('id', 'name', 'template', 'widget', 'widget_metadata')
 
 
 class DocumentTemplateStepSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerializer):
@@ -197,5 +197,7 @@ class DocumentSerializer(DPDynamicFieldsModelSerializer, serializers.ModelSerial
                     f = DocumentValues.objects.get(pk=document_value.get('id'))
                 f.value = document_value.get('value')
                 f.save()
+
+        instance.update_calculated_fields()
 
         return instance

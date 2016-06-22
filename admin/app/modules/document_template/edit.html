@@ -36,7 +36,7 @@
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Widget</label>
-                            <md-select ng-model="ctrl.model.document_template_fields[template_field_index].widget" class="md-block" flex-gt-sm>
+                            <md-select ng-model="ctrl.model.document_template_fields[template_field_index].widget" class="md-block">
                                 <md-option ng-repeat="widget in ctrl.field_widgets" value="{{widget.key}}">
                                     {{widget.title}}
                                 </md-option>
@@ -46,6 +46,9 @@
                                 {{ message }}
                             </div>
                         </md-input-container>
+
+                        <div ng-include="'/app/modules/document_template/extrafields/' + ctrl.model.document_template_fields[template_field_index].widget + '.html'"></div>
+
                         <md-input-container class="md-block">
                             <md-button class="md-icon-button md-accent md-input-line-delete" ng-click="ctrl.removeField(template_field)">
                                 <i class="material-icons">clear</i>

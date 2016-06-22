@@ -10,14 +10,9 @@
             </md-input-container>
         </md-card>
         <md-card>
-            <md-input-container class="md-block" ng-repeat="document_value in ctrl.model.document_values">
-                <label>{{ document_value.name }}</label>
-                <input ng-model="document_value.value" required>
-
-                <div ng-messages="ctrl.errors.name">
-                    <div ng-message="required" ng-repeat="message in ctrl.errors.name">{{ message }}</div>
-                </div>
-            </md-input-container>
+            <div ng-repeat="document_value in ctrl.model.document_values">
+                <div ng-include="'/app/modules/document/fields/' + document_value.widget + '.html'"></div>
+            </div>
         </md-card>
         <md-button class="md-raised md-primary" type="submit">Save</md-button>
     </form>

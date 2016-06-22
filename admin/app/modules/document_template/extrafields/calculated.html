@@ -1,0 +1,17 @@
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Select calculated variant</label>
+    <md-select ng-model="ctrl.model.document_template_fields[template_field_index].widget_metadata" class="md-block" required>
+        <md-option ng-repeat="field_for_calculated in ctrl.model.document_template_fields | filter_by_widget:'text,string'"
+                   value="count_symbols;;;{{ field_for_calculated.name }}">
+            <b>Количество символов в поле</b> {{ field_for_calculated.name }}
+        </md-option>
+        <md-option  ng-repeat="field_for_calculated in ctrl.model.document_template_fields | filter_by_widget:'text,string'"
+                    value="count_words;;;{{ field_for_calculated.name }}">
+            <b>Количество слов в поле</b> {{ field_for_calculated.name }}
+        </md-option>
+    </md-select>
+    <div ng-message="required"
+         ng-repeat="message in ctrl.errors.document_template_fields[template_field_index].widget_metadata">
+        {{ message }}
+    </div>
+</md-input-container>

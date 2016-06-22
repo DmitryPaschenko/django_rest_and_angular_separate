@@ -19,8 +19,8 @@ app.run(['$rootScope', '$state', '$stateParams', 'djangoAuth', function ($rootSc
     }
   ]
 )
-.config(['$httpProvider', '$resourceProvider', '$mdThemingProvider',
-function($httpProvider, $resourceProvider, $mdThemingProvider) {
+.config(['$httpProvider', '$resourceProvider', '$mdThemingProvider', '$mdDateLocaleProvider',
+function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProvider) {
     var customBlueMap = 		$mdThemingProvider.extendPalette('light-blue', {
         'contrastDefaultColor': 'light',
         'contrastDarkColors': ['50'],
@@ -40,6 +40,10 @@ function($httpProvider, $resourceProvider, $mdThemingProvider) {
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 
     $resourceProvider.defaults.stripTrailingSlashes = false;
+
+    $mdDateLocaleProvider.formatDate = function(date) {
+       return moment(date).format('YYYY-MM-DD');
+    };
 }])
 .config(['$stateProvider', function ($stateProvider) {
       $stateProvider
@@ -291,7 +295,17 @@ function($httpProvider, $resourceProvider, $mdThemingProvider) {
         });
     }
   ]
-);
+).filter('filter_by_widget', function() {
+    return function( items, widgets ) {
+        var filtered = [];
+        angular.forEach(items, function(item) {
+            if( widgets.indexOf(item.widget) !== -1) {
+                filtered.push(item);
+            }
+        });
+        return filtered;
+    }
+});
 
 function DialogController($scope, $mdDialog) {
   $scope.hide = function() {

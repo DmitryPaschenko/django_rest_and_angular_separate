@@ -246,6 +246,18 @@ angular.module('AdminApp').controller('DocumentTemplateCreateCtrl', function ($s
 function getTemplateWidgets() {
     return self.field_widgets = [
         {
+            key: 'date',
+            title: 'Date'
+        },
+        {
+            key: 'number',
+            title: 'Number'
+        },
+        {
+            key: 'select',
+            title: 'Select'
+        },
+        {
             key: 'string',
             title: 'String'
         },

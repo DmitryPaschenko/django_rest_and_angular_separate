@@ -19,17 +19,34 @@ class DocumentTemplateField(DPAbstractModel, DPAbstractSignable, DPAbstractTimes
     WIDGET_STRING = 'string'
     WIDGET_TEXT = 'text'
     WIDGET_CALCULATED = 'calculated'
+    WIDGET_DATE = 'date'
+    WIDGET_NUMBER = 'number'
+    WIDGET_SELECT = 'select'
+    # WIDGET_LINK = 'link'
     WIDGETS = (
+        (WIDGET_DATE,       'Date'),
+        (WIDGET_NUMBER,     'Number'),
+        (WIDGET_SELECT,     'Select'),
         (WIDGET_STRING,     'String'),
-        (WIDGET_TEXT,       'TEXT'),
+        (WIDGET_TEXT,       'Text'),
         (WIDGET_CALCULATED, 'Calculated Field')
     )
     template = models.ForeignKey(DocumentTemplate, null=False, blank=False, related_name='document_template_fields')
     name = models.CharField(max_length=255, null=False, blank=False)
     widget = models.CharField(max_length=50, choices=WIDGETS, default=WIDGET_STRING, help_text='field widget')
+    widget_metadata = models.TextField(blank=True, null=True, default='')
 
     class Meta:
         ordering = ['name']
+
+    def isCalculated(self):
+        return self.widget == self.WIDGET_CALCULATED
+
+    def getCalculatedMetadata(self):
+        if self.isCalculated():
+            return self.widget_metadata.split(';;;')
+        else:
+            return False
 
 
 class DocumentTemplateStep(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
@@ -86,6 +103,39 @@ class Document(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
         else:
             raise ValueError('You have not permission for this action')
 
+    def get_field_value(self, name):
+        value = None
+        for v in self.document_values.all():
+            if v.field.name == name:
+                value = v.value
+                break
+
+        return value
+
+    def update_calculated_fields(self):
+        for v in self.document_values.all():
+            if v.field.isCalculated():
+                metadata = v.field.getCalculatedMetadata()
+                if len(metadata) < 2:
+                    raise ValueError('Calculated metadata is not valid')
+
+                method, field = v.field.getCalculatedMetadata()
+
+                if method == 'count_symbols':
+                    value = self.get_field_value(field)
+                    if value is not None:
+                        calculated_value = len(value.strip())
+                        v.set_value_force(calculated_value)
+                        v.save()
+                elif method == 'count_words':
+                    value = self.get_field_value(field)
+                    if value is not None:
+                        calculated_value = len(value.strip().split(' '))
+                        v.set_value_force(calculated_value)
+                        v.save()
+
+
+
 
 class DocumentValues(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampable):
     document = models.ForeignKey(Document, null=False, blank=False, related_name='document_values')
@@ -106,6 +156,9 @@ class DocumentValues(DPAbstractModel, DPAbstractSignable, DPAbstractTimestampabl
                 if self.field.pk == f.pk:
                     self._value = value
                     break
+
+    def set_value_force(self, value):
+        self._value = value
 
     def can_edit(self):
         can = False

@@ -101,6 +101,17 @@ angular.module('AdminApp').controller('DocumentCtrl', function ($scope, $statePa
         self.promise = documentService.getDocument(id).$promise;
 
         function onSuccess(response) {
+
+            $.each(response.document_values, function( index, item ) {
+                if (item.field.widget == 'date') {
+                    response.document_values[index].value = moment(item.value).toDate();
+                }
+                if (item.field.widget == 'number') {
+                    response.document_values[index].value = Number(item.value);
+                }
+            });
+
+
             self.model = response;
         }
 
@@ -117,6 +128,14 @@ angular.module('AdminApp').controller('DocumentCtrl', function ($scope, $statePa
         $scope.clearAlerts();
 
         function onSuccess(response) {
+            $.each(response.document_values, function( index, item ) {
+                if (item.field.widget == 'date') {
+                    response.document_values[index].value = moment(item.value).toDate();
+                }
+                if (item.field.widget == 'number') {
+                    response.document_values[index].value = Number(item.value);
+                }
+            });
             self.model = response;
             $scope.addSuccessAlert('Document data saved!')
         }
@@ -186,11 +205,13 @@ angular.module('AdminApp').controller('DocumentCreateCtrl', function ($scope, $s
             self.model.document_values = self.availableTemplateFields.map(function(field) {
                 return {
                     field: {
-                        id: field.id
+                        id: field.id,
+                        name: field.name,
+                        widget_metadata: field.widget_metadata,
                     },
                     name: field.name,
                     widget: field.widget,
-                    value: ''
+                    value: field.widget == 'date' ? new Date() : ''
                 };
             });
         }
