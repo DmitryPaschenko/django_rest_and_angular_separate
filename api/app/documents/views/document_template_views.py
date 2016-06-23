@@ -7,7 +7,7 @@ from dp_base_libs.paginations import DPAngularTablePagination
 from documents.models import DocumentTemplate, DocumentTemplateField, DocumentTemplateStep
 from documents.serializers import DocumentTemplateSerializer, DocumentTemplateFieldSerializer, DocumentTemplateStepSerializer
 from documents.filters import DocumentTemplateFilter, DocumentTemplateFieldFilter
-from dp_base_libs.decorators import exception_to_response
+from users.permissions import DPChiefPermission
 
 
 class DocumentTemplateList(ListCreateAPIView):
@@ -18,6 +18,7 @@ class DocumentTemplateList(ListCreateAPIView):
     ordering_fields = (
         'name'
     )
+    permission_classes = (DPChiefPermission,)
 
     def get_queryset(self):
         user = self.request.user
@@ -41,6 +42,7 @@ class DocumentTemplateList(ListCreateAPIView):
 
 class SingleDocumentTemplate(RetrieveUpdateDestroyAPIView):
     serializer_class = DocumentTemplateSerializer
+    permission_classes = (DPChiefPermission,)
 
     def get_queryset(self):
         user = self.request.user
@@ -84,6 +86,7 @@ class DocumentTemplateFieldList(ListCreateAPIView):
     ordering_fields = (
         'name'
     )
+    permission_classes = (DPChiefPermission,)
 
     # def get_queryset(self):
     #     # TODO this line OR with "Director Privilegy"(create this privilegy)
@@ -121,6 +124,7 @@ class DocumentTemplateFieldList(ListCreateAPIView):
 
 class SingleDocumentTemplateField(RetrieveUpdateDestroyAPIView):
     serializer_class = DocumentTemplateFieldSerializer
+    permission_classes = (DPChiefPermission,)
 
     def get_queryset(self):
         return DocumentTemplateField.objects.all()

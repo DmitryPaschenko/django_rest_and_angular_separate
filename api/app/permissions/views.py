@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework import filters
 from dp_base_libs.paginations import DPAngularTablePagination
 from permissions.filters import PermissionFilter
+from users.permissions import DPChiefPermission
 
 
 class PermissionList(ListCreateAPIView):
@@ -14,6 +15,7 @@ class PermissionList(ListCreateAPIView):
     queryset = Permission.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = PermissionFilter
+    permission_classes = (DPChiefPermission,)
     search_fields = ('name', 'codename')
     ordering_fields = (
         'name', 'codename'
@@ -34,6 +36,7 @@ class PermissionList(ListCreateAPIView):
 class SinglePermission(RetrieveUpdateDestroyAPIView):
     queryset = Permission.objects.all()
     serializer_class = PermissionSerializer
+    permission_classes = (DPChiefPermission,)
 
     def get(self, request, pk):
         """
@@ -64,6 +67,7 @@ class ContentTypeList(ListAPIView):
     serializer_class = ContentTypeSerializer
     queryset = ContentType.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    permission_classes = (DPChiefPermission,)
     ordering_fields = (
         'app_label', 'model'
     )

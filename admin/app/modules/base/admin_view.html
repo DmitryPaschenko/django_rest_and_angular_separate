@@ -25,7 +25,7 @@
             <md-divider></md-divider>
             <md-subheader>Management</md-subheader>
             <md-item ng-repeat="item in admin">
-                <a ui-sref="{{item.sref}}" ui-sref-opts="{{item.srefOpts}}">
+                <a ui-sref="{{item.sref}}" ui-sref-opts="{{item.srefOpts}}" ng-show="item.permission == '' || (item.permission == 'is_chief' && currentUserData.is_chief) ">
                     <md-item-content md-ink-ripple layout="row" layout-align="start center">
                         <div class="inset">
                             <ng-md-icon icon="{{item.icon}}"></ng-md-icon>

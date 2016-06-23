@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import filters
 from dp_base_libs.paginations import DPAngularTablePagination
 from users.filters import UserFilter
+from users.permissions import DPChiefPermission
 
 
 class AccountConfirmEmailView(APIView):
@@ -82,6 +83,7 @@ class UserListView(ListAPIView):
     queryset = get_user_model().objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = UserFilter
+    permission_classes = (DPChiefPermission,)
     search_fields = ('username', 'first_name', 'last_name', 'email')
     ordering_fields = (
         'id', 'username', 'first_name', 'last_name', 'email'

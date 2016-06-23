@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework import filters
 from groups.filters import GroupFilter
 from rest_framework.response import Response
+from users.permissions import DPChiefPermission
 
 
 class GroupList(ListCreateAPIView):
@@ -14,6 +15,7 @@ class GroupList(ListCreateAPIView):
     queryset = Group.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = GroupFilter
+    permission_classes = (DPChiefPermission,)
     ordering_fields = (
         'name'
     )
@@ -33,6 +35,7 @@ class GroupList(ListCreateAPIView):
 class SingleGroup(RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = (DPChiefPermission,)
 
     def get(self, request, pk):
         """

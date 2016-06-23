@@ -116,6 +116,10 @@ REST_FRAMEWORK = {
     'ORDERING_PARAM': 'order'
 }
 
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'users.serializers.UserDetailsSerializer'
+}
+
 AUTH_USER_MODEL = 'users.AppUser'
 
 # option for registration

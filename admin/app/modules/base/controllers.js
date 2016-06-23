@@ -30,13 +30,15 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state, $mdM
       sref: 'admin.main.home',
       srefOpts: {},
       title: 'Dashboard',
-      icon: 'dashboard'
+      icon: 'dashboard',
+      permission: ''
     },
     {
       sref: 'admin.main.profile',
       srefOpts: {},
       title: 'Profile',
-      icon: 'profile'
+      icon: 'profile',
+      permission: ''
     }
   ];
   $scope.admin = [
@@ -44,31 +46,36 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdDialog, djangoAuth, $state, $mdM
       sref: 'admin.users.list',
       srefOpts: {},
       title: 'Users',
-      icon: 'groups'
+      icon: 'groups',
+      permission: 'is_chief'
     },
     {
       sref: 'admin.permissions.list',
       srefOpts: {},
       title: 'User Permissions',
-      icon: 'groups'
+      icon: 'groups',
+      permission: 'is_chief'
     },
     {
       sref: 'admin.groups.list',
       srefOpts: {},
       title: 'User Groups',
-      icon: 'groups'
+      icon: 'groups',
+      permission: 'is_chief'
     },
     {
       sref: 'admin.templates.list',
       srefOpts: {},
       title: 'Document Templates',
-      icon: 'templates'
+      icon: 'templates',
+      permission: 'is_chief'
     },
     {
       sref: 'admin.documents.list',
       srefOpts: {},
       title: 'Documents',
-      icon: 'documents'
+      icon: 'documents',
+      permission: ''
     }
 //    {
 //      link : '',

@@ -9,6 +9,9 @@ class AppUser(AbstractUser, DPAbstractModel, DPAbstractSignable, DPAbstractTimes
     def save(self, *args, **kwargs):
         super(AppUser, self).save(*args, **kwargs)
 
+    def is_chief(self):
+        return self.has_perm('dp_crm_chief_permission')
+
     class Meta:
         ordering = ['id']
 
