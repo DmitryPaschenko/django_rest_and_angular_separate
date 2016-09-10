@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FRONT_DIR = os.path.abspath(os.path.join(BASE_DIR, os.pardir, os.pardir, os.pardir, 'admin'))
 
 # dev or prod
 ENV_TYPE = 'dev'
@@ -84,6 +85,30 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            FRONT_DIR,
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+STATIC_URL = '/admin/'
+
+STATICFILES_DIRS = [
+    FRONT_DIR,
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

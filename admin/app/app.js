@@ -11,6 +11,7 @@ var app = angular.module('AdminApp', [
     'dcbClearInput']);
 
 var API_URL = '//127.0.0.1:8000/api/v1';
+var STATIC_URL = 'admin/';
 
 app.run(['$rootScope', '$state', '$stateParams', 'djangoAuth', function ($rootScope, $state, $stateParams, djangoAuth) {
         $rootScope.$state = $state;
@@ -51,7 +52,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             abstract: true,
             views: {
                 'layout': {
-                    templateUrl: '/app/modules/base/admin_view.html'
+                    templateUrl: STATIC_URL + '/app/modules/base/admin_view.html'
                 },
             },
             resolve: {
@@ -64,7 +65,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             abstract: true,
             views: {
                 'layout': {
-                    templateUrl: '/app/modules/base/blank_view.html'
+                    templateUrl: STATIC_URL + '/app/modules/base/blank_view.html'
                 }
             }
         })
@@ -79,7 +80,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/dashboard/dashboard.html'
+                    templateUrl: STATIC_URL + '/app/modules/dashboard/dashboard.html'
                 },
             },
             data: {
@@ -90,7 +91,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/profile",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/user/profile.html',
+                    templateUrl: STATIC_URL + '/app/modules/user/profile.html',
                 }
             },
             data: { displayName: 'Profile' }
@@ -107,7 +108,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/users/{userId:[0-9]+}",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/user/edit.html',
+                    templateUrl: STATIC_URL + '/app/modules/user/edit.html',
                 }
             },
             data: { displayName: 'Edit user' }
@@ -116,7 +117,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/users/create",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/user/create.html',
+                    templateUrl: STATIC_URL + '/app/modules/user/create.html',
                 }
             },
             data: { displayName: 'Create user' }
@@ -125,7 +126,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/users",
             views: {
                 'content': {
-                            templateUrl: '/app/modules/user/list.html',
+                            templateUrl: STATIC_URL + '/app/modules/user/list.html',
                         }
             },
 
@@ -144,7 +145,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/permissions/{id:[0-9]+}",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/permission/edit.html',
+                    templateUrl: STATIC_URL + '/app/modules/permission/edit.html',
                 }
             },
             data: { displayName: 'Edit permission' }
@@ -153,7 +154,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/permissions/create",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/permission/create.html',
+                    templateUrl: STATIC_URL + '/app/modules/permission/create.html',
                 }
             },
             data: { displayName: 'Create permission' }
@@ -162,7 +163,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/permissions",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/permission/list.html',
+                    templateUrl: STATIC_URL + '/app/modules/permission/list.html',
                 }
             },
             data: { displayName: 'Permission list' }
@@ -179,7 +180,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/groups/{id:[0-9]+}",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/group/edit.html',
+                    templateUrl: STATIC_URL + '/app/modules/group/edit.html',
                 }
             },
             data: { displayName: 'Edit groups' }
@@ -188,7 +189,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/groups/create",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/group/create.html',
+                    templateUrl: STATIC_URL + '/app/modules/group/create.html',
                 }
             },
             data: { displayName: 'Create groups' }
@@ -197,7 +198,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/groups",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/group/list.html',
+                    templateUrl: STATIC_URL + '/app/modules/group/list.html',
                 }
             },
             data: { displayName: 'Group list' }
@@ -214,7 +215,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/templates/{id:[0-9]+}",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/document_template/edit.html',
+                    templateUrl: STATIC_URL + '/app/modules/document_template/edit.html',
                 }
             },
             data: { displayName: 'Edit templates' }
@@ -223,7 +224,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/templates/create",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/document_template/create.html',
+                    templateUrl: STATIC_URL + '/app/modules/document_template/create.html',
                 }
             },
             data: { displayName: 'Create templates' }
@@ -232,7 +233,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/templates",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/document_template/list.html',
+                    templateUrl: STATIC_URL + '/app/modules/document_template/list.html',
                 }
             },
             data: { displayName: 'Template list' }
@@ -249,7 +250,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/documents/{id:[0-9]+}",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/document/edit.html',
+                    templateUrl: STATIC_URL + '/app/modules/document/edit.html',
                 }
             },
             data: { displayName: 'Edit documents' }
@@ -258,7 +259,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/documents/{template_id:[0-9]+}/add",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/document/create.html',
+                    templateUrl: STATIC_URL + '/app/modules/document/create.html',
                 }
             },
             data: { displayName: 'Add document' }
@@ -276,7 +277,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/documents",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/document/list.html',
+                    templateUrl: STATIC_URL + '/app/modules/document/list.html',
                 }
             },
             data: { displayName: 'Document list' }
@@ -286,7 +287,7 @@ function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProv
             url: "/login",
             views: {
                 'content': {
-                    templateUrl: '/app/modules/user/login.html'
+                    templateUrl: STATIC_URL + '/app/modules/user/login.html'
                 }
             },
             controller: function($scope, $mdDialog){

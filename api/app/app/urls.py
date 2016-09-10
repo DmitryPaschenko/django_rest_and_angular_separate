@@ -1,9 +1,14 @@
 from django.conf.urls import include, url
+from django.views.generic import TemplateView
 from documents.urls import template_urls as document_template_url, template_field_urls, document_urls
 from groups import urls as groups_api_url
 from permissions import contenttypes_urls as contenttypes_api_urls
 from permissions import permissions_urls as permissions_api_urls
 from users import urls as user_api_urls
+
+
+class MainView(TemplateView):
+    template_name = 'index.html'
 
 api_urls = [
     url(r'^rest-auth/', include('rest_auth.urls')),
@@ -25,4 +30,5 @@ urlpatterns = [
     # API
     url(r'^api/v1/', include(api_urls)),
     url(r'^docs/', include('rest_framework_swagger.urls')),
+    url(r'^$', MainView.as_view()),
 ]
