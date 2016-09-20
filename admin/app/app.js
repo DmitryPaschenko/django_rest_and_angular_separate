@@ -10,18 +10,19 @@ var app = angular.module('AdminApp', [
     'angularUtils.directives.uiBreadcrumbs',
     'dcbClearInput']);
 
-var API_URL = '//127.0.0.1:8000/api/v1';
+var API_URL = '/api/v1';
 var STATIC_URL = 'admin/';
 
 app.run(['$rootScope', '$state', '$stateParams', 'djangoAuth', function ($rootScope, $state, $stateParams, djangoAuth) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
-        djangoAuth.initialize('//127.0.0.1:8000/api/v1/rest-auth', false);
+        djangoAuth.initialize(API_URL + '/rest-auth', false);
     }
   ]
 )
-.config(['$httpProvider', '$resourceProvider', '$mdThemingProvider', '$mdDateLocaleProvider',
-function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProvider) {
+.config(['$httpProvider', '$resourceProvider', '$mdThemingProvider', '$mdDateLocaleProvider', '$locationProvider',
+function($httpProvider, $resourceProvider, $mdThemingProvider, $mdDateLocaleProvider, $locationProvider) {
+    $locationProvider.html5Mode(true);
     var customBlueMap = 		$mdThemingProvider.extendPalette('light-blue', {
         'contrastDefaultColor': 'light',
         'contrastDarkColors': ['50'],

@@ -30,5 +30,5 @@ urlpatterns = [
     # API
     url(r'^api/v1/', include(api_urls)),
     url(r'^docs/', include('rest_framework_swagger.urls')),
-    url(r'^$', MainView.as_view()),
+    url(r'^', MainView.as_view()),
 ]
